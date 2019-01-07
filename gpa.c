@@ -125,7 +125,7 @@ void toUpperCase(char *name) {
   *
   * @param data - pointer to the data
   */
-void addCommand(Data *data) { //TODO check if valid grade
+void addCommand(Data *data) {
   char *course = (char *)malloc(1024);
   int creditHours;
   char *letterGrade = (char *)malloc(1024);
