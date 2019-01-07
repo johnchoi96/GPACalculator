@@ -7,9 +7,12 @@
   */
 
 #include "data.h"
+#include "calculate.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
+#include <stdbool.h>
 
 /**
   * Prints out failure message and terminates program.
@@ -29,10 +32,10 @@ void fail(const char *msg) {
 void listCommand(Data *data) {
   if (data->size != 0) {
     data->current = data->course;
-    fprintf(stdout, "%7s%3d%7s earned\n", data->current->name, data->current->hours, data->current->letterGrade);
+    fprintf(stdout, "%7s%3d Hours %7s earned\n", data->current->name, data->current->hours, data->current->letterGrade);
     while (data->current->next != NULL) {
       data->current = data->current->next;
-      fprintf(stdout, "%7s%3d%7s earned\n", data->current->name, data->current->hours, data->current->letterGrade);
+      fprintf(stdout, "%7s%3d Hours %7s earned\n", data->current->name, data->current->hours, data->current->letterGrade);
     }
   }
 }
@@ -56,11 +59,73 @@ void calculateCommand(Data *data) {
 }
 
 /**
+  * Finds and returns the pointer to the course with the given name.
+  * O(n) linear search method.
+  *
+  * @param data - pointer to the data
+  * @param name - name of the course to find
+  * @return pointer to the course with the given name or NULL if does not exist
+  */
+Course *findCourse(Data *data, const char *name) {
+  data->current = data->course;
+  if (strcasecmp(data->current->name, name) == 0) {
+    return data->current;
+  }
+  while (data->current->next != NULL) {
+    data->current = data->current->next;
+    if (strcasecmp(data->current->name, name) == 0) {
+      return data->current;
+    }
+  }
+  return NULL;
+}
+
+/**
+  * Returns true if the input grade is valid.
+  * Valid grades should have optional '+' or '-' following the letter,
+  * which should be A, B, C, D, or F.
+  *
+  * @param grade - pointer to the grade
+  * @return true if grade is valid
+  */
+bool isValidGrade(char *grade) { //TODO only A, B, C, D, F are valid
+  if (strlen(grade) > 3) {
+    return false;
+  }
+  if (strlen(grade) == 2 && (grade[1] != '+' && grade[1] != '-')) {
+    return false;
+  }
+  if ((grade[0] >= 'A' && grade[0] <= 'F') || (grade[0] >= 'a' && grade[0] <= 'f')) {
+    if (grade[0] >= 'a' && grade[0] <= 'f') {
+      *(grade) = grade[0] - 32;
+    }
+    if (grade[0] == 'E') {
+      return false;
+    }
+    return true;
+  }
+  return false;
+}
+
+/**
+  * Converts all lowercases in the course title to uppercase.
+  *
+  * @param name - pointer to the name
+  */
+void toUpperCase(char *name) {
+  for (int i = 0; i < strlen(name); i++) {
+    if (name[i] >= 'a' && name[i] <= 'z') {
+      *(name + i) = name[i] - 32;
+    }
+  }
+}
+
+/**
   * Defines a behavior for the add command.
   *
   * @param data - pointer to the data
   */
-void addCommand(Data *data) { //TODO need to do a name duplicate check
+void addCommand(Data *data) { //TODO check if valid grade
   char *course = (char *)malloc(1024);
   int creditHours;
   char *letterGrade = (char *)malloc(1024);
@@ -68,6 +133,20 @@ void addCommand(Data *data) { //TODO need to do a name duplicate check
   if (matches != 3) {
     fprintf(stdout, "Invalid command\n");
     return;
+  }
+  toUpperCase(course);
+  if (!isValidGrade(letterGrade)) {
+    fprintf(stdout, "Invalid grade.\n");
+    return;
+  }
+
+  if (data->size != 0) {
+    Course *dupCheckCourse = findCourse(data, course);
+    if (dupCheckCourse != NULL) {
+      fprintf(stdout, "Duplicate course %s already in the system.\n", course);
+      fprintf(stdout, "Duplicate course: %s\tCredit Hours: %d\tGrade: %s\n\n", dupCheckCourse->name, dupCheckCourse->hours, dupCheckCourse->letterGrade);
+      return;
+    }
   }
 
   addCourse(data, course, creditHours, letterGrade);
