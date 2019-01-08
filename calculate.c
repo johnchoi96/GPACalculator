@@ -6,8 +6,6 @@
   * Calculates overall GPA based on the courses added to the data.
   */
 
-/** GPA formula is (grades * credits) / credits */
-
 #include "data.h"
 #include <stdio.h>
 #include <stdlib.h>
