@@ -32,12 +32,13 @@ void fail(const char *msg) {
 void listCommand(Data *data) {
   if (data->size != 0) {
     data->current = data->course;
-    fprintf(stdout, "%7s%3d Hours \"%7s\" earned\n", data->current->name, data->current->hours, data->current->letterGrade);
+    fprintf(stdout, "%7s%3d Hours %7s earned\n", data->current->name, data->current->hours, data->current->letterGrade);
     while (data->current->next != NULL) {
       data->current = data->current->next;
-      fprintf(stdout, "%7s%3d Hours \"%7s\" earned\n", data->current->name, data->current->hours, data->current->letterGrade);
+      fprintf(stdout, "%7s%3d Hours %7s earned\n", data->current->name, data->current->hours, data->current->letterGrade);
     }
   }
+  fprintf(stdout, "Total of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
 }
 
 /**
