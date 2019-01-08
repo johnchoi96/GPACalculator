@@ -198,7 +198,7 @@ void addCommand(Data *data) {
   * @param data - pointer to the data
   */
 void removeCommand(Data *data) {
-
+  fprintf(stdout, "Feature coming soon!\n");
 }
 
 /**
