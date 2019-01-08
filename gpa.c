@@ -198,7 +198,10 @@ void addCommand(Data *data) {
   * @param data - pointer to the data
   */
 void removeCommand(Data *data) {
+  char *courseName = (char *)malloc(1024);
+  fscanf(stdin, "%s%*[^\n]\n", courseName);
   fprintf(stdout, "Feature coming soon!\n");
+  free(courseName);
 }
 
 /**
