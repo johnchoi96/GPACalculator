@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 01062019
+  * @since 01072019
   *
   * Driver file for this program.
   */
@@ -32,10 +32,10 @@ void fail(const char *msg) {
 void listCommand(Data *data) {
   if (data->size != 0) {
     data->current = data->course;
-    fprintf(stdout, "%7s%3d Hours %7s earned\n", data->current->name, data->current->hours, data->current->letterGrade);
+    fprintf(stdout, "%7s%3d Hours \"%7s\" earned\n", data->current->name, data->current->hours, data->current->letterGrade);
     while (data->current->next != NULL) {
       data->current = data->current->next;
-      fprintf(stdout, "%7s%3d Hours %7s earned\n", data->current->name, data->current->hours, data->current->letterGrade);
+      fprintf(stdout, "%7s%3d Hours \"%7s\" earned\n", data->current->name, data->current->hours, data->current->letterGrade);
     }
   }
 }
@@ -55,7 +55,8 @@ void helpCommand() {
   * @param data - pointer to the data
   */
 void calculateCommand(Data *data) {
-
+  double gpa = calculateGPA(data);
+  fprintf(stdout, "The cumulative GPA with %d coursework(s) is:\t%.3f\n\n", data->size, gpa);
 }
 
 /**
@@ -144,13 +145,13 @@ void addCommand(Data *data) {
     Course *dupCheckCourse = findCourse(data, course);
     if (dupCheckCourse != NULL) {
       fprintf(stdout, "Duplicate course %s already in the system.\n", course);
-      fprintf(stdout, "Duplicate course: %s\tCredit Hours: %d\tGrade: %s\n\n", dupCheckCourse->name, dupCheckCourse->hours, dupCheckCourse->letterGrade);
+      fprintf(stdout, "Duplicate course: %s\tCredit Hours: %d\tGrade: \"%s\"\n\n", dupCheckCourse->name, dupCheckCourse->hours, dupCheckCourse->letterGrade);
       return;
     }
   }
 
   addCourse(data, course, creditHours, letterGrade);
-  fprintf(stdout, "%s with %d credit hours - %s earned.\tAdded\n", course, creditHours, letterGrade);
+  fprintf(stdout, "%s with %d credit hours - \"%s\" earned.\tAdded\n", course, creditHours, letterGrade);
 }
 
 /**

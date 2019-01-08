@@ -1,7 +1,7 @@
 /**
   * @file data.c
   * @author John Choi
-  * @since 01062019
+  * @since 01072019
   *
   * Initializes data and adds and removes courses, and frees data.
   */
@@ -19,6 +19,7 @@ Data *initializeData() {
 
 void addCourse(Data *data, const char *course, int hours, const char *grade) {
   //first, make a new course
+  data->totalCredits += hours;
   Course *newCourse = (Course *)malloc(sizeof(Course));
   // fprintf(stdout, "Reached\n");
   newCourse->name = (char *)malloc(1024);

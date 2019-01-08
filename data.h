@@ -21,6 +21,7 @@ typedef struct Course {
 /** Struct to represent the data. */
 typedef struct {
   int size;
+  int totalCredits;
   Course *course; //head
   Course *current;
 } Data;
