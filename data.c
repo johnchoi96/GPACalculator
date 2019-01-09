@@ -55,7 +55,7 @@ bool removeCourse(Data *data, const char *courseName) {
       free(data->course);
       data->current = data->course;
       data->size = 0;
-      return false;
+      return true;
     }
     data->current = data->current->next;
     data->course = data->current;
