@@ -8,6 +8,7 @@
 
 #include "data.h"
 #include "calculate.h"
+#include "print.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,50 +40,6 @@ void listCommand(Data *data) {
     }
   }
   fprintf(stdout, "Total of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
-}
-
-/**
-  * Defines behavior for the help command.
-  */
-void helpCommand() {
-  fprintf(stdout, "\nUsage:\n");
-  fprintf(stdout, "\tlist\n\tcalculate\n\tchart\n\tadd [COURSE] [HOURS] [LetterGrade]\n\tremove [COURSE]\n\tquit\n");
-}
-
-/**
-  * Prints out the GPA chart.
-  */
-void chartCommand() {
-  fprintf(stdout, "\n\n");
-  fprintf(stdout, "%10s|%10s\n", "Grade  ", "Value");
-  fprintf(stdout, "---------------------\n");
-  fprintf(stdout, "---------------------\n");
-  fprintf(stdout, "%10s|%10s\n", "A+  ", "4.333");
-  fprintf(stdout, "%10s|%10s\n", "A   ", "4.000");
-  fprintf(stdout, "%10s|%10s\n", "A-  ", "3.667");
-
-  fprintf(stdout, "---------------------\n");
-
-  fprintf(stdout, "%10s|%10s\n", "B+  ", "3.333");
-  fprintf(stdout, "%10s|%10s\n", "B   ", "3.000");
-  fprintf(stdout, "%10s|%10s\n", "B-  ", "2.667");
-
-  fprintf(stdout, "---------------------\n");
-
-  fprintf(stdout, "%10s|%10s\n", "C+  ", "2.333");
-  fprintf(stdout, "%10s|%10s\n", "C   ", "2.000");
-  fprintf(stdout, "%10s|%10s\n", "C-  ", "1.667");
-
-  fprintf(stdout, "---------------------\n");
-
-  fprintf(stdout, "%10s|%10s\n", "D+  ", "1.333");
-  fprintf(stdout, "%10s|%10s\n", "D   ", "1.000");
-  fprintf(stdout, "%10s|%10s\n", "D-  ", "0.667");
-
-  fprintf(stdout, "---------------------\n");
-
-  fprintf(stdout, "%10s|%10s\n", "F   ", "0.000");
-  fprintf(stdout, "---------------------\n");
 }
 
 /**
