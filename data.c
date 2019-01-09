@@ -51,10 +51,11 @@ bool removeCourse(Data *data, const char *courseName) {
   data->current = data->course;
   if (strcmp(data->current->name, courseName) == 0) {
     if (data->size == 1) {
-      data->current = NULL;
+      // data->current = NULL;
       free(data->course);
       data->current = data->course;
       data->size = 0;
+      data->totalCredits = 0;
       return true;
     }
     data->current = data->current->next;
