@@ -259,5 +259,6 @@ int main(void) {
   }
   freeData(data);
   free(data);
+  free(command);
   return EXIT_SUCCESS;
 }
