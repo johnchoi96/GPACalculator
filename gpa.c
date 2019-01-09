@@ -200,7 +200,8 @@ void addCommand(Data *data) {
 void removeCommand(Data *data) {
   char *courseName = (char *)malloc(1024);
   fscanf(stdin, "%s%*[^\n]\n", courseName);
-  fprintf(stdout, "Feature coming soon!\n");
+  toUpperCase(courseName);
+  removeCourse(data, courseName);
   free(courseName);
 }
 

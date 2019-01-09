@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 Data *initializeData() {
   Data *data = (Data *)malloc(sizeof(Data));
@@ -43,7 +44,22 @@ void addCourse(Data *data, const char *course, int hours, const char *grade) {
 }
 
 void removeCourse(Data *data, const char *courseName) {
-
+  data->current = data->course;
+  if (strcmp(data->current->name, courseName) == 0) {
+    data->current = data->current->next;
+    data->course = data->current;
+  } else {
+    Course *prev = data->current;
+    while (data->current->next != NULL) {
+      data->current = data->current->next;
+      if (strcmp(data->current->name, courseName) == 0) {
+        prev->next = data->current->next;
+        break;
+      }
+      prev = data->current;
+    }
+    fprintf(stdout, "Course %s does not exist\n", courseName);
+  }
 }
 
 void freeData(Data *data) {
