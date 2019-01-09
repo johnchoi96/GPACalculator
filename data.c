@@ -45,8 +45,18 @@ void addCourse(Data *data, const char *course, int hours, const char *grade) {
 
 bool removeCourse(Data *data, const char *courseName) {
   bool removed = false;
+  if (data->size == 0) {
+    return false;
+  }
   data->current = data->course;
   if (strcmp(data->current->name, courseName) == 0) {
+    if (data->size == 1) {
+      data->current = NULL;
+      free(data->course);
+      data->current = data->course;
+      data->size = 0;
+      return false;
+    }
     data->current = data->current->next;
     data->course = data->current;
     removed = true;
