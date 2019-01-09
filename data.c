@@ -50,9 +50,6 @@ void addCourse(Data *data, const char *course, int hours, const char *grade) {
   * @param data - pointer to data
   */
 void freeAllCourses(Data *data) {
-  if (data->size == 0) {
-    return;
-  }
   data->current = data->course;
   free(data->current->name);
   free(data->current->letterGrade);
@@ -109,7 +106,9 @@ bool removeCourse(Data *data, const char *courseName) {
 }
 
 void freeData(Data *data) {
-  freeAllCourses(data);
-  free(data->course);
-  free(data->current);
+  if (data->size != 0) {
+    freeAllCourses(data);
+    free(data->course);
+    free(data->current);
+  }
 }
