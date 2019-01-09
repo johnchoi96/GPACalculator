@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <stdbool.h>
 
 Data *initializeData() {
@@ -43,7 +44,24 @@ void addCourse(Data *data, const char *course, int hours, const char *grade) {
   data->size++;
 }
 
+void freeAllCourses(Data *data) {
+  data->current = data->course;
+  free(data->current->name);
+  free(data->current->letterGrade);
+  while (data->current->next != NULL) {
+    data->current = data->current->next;
+    free(data->current->name);
+    free(data->current->letterGrade);
+  }
+}
+
 bool removeCourse(Data *data, const char *courseName) {
+  if (strcasecmp(courseName, "all") == 0) {
+    data->size = 0;
+    data->totalCredits = 0;
+    freeAllCourses(data);
+    return true;
+  }
   bool removed = false;
   if (data->size == 0) {
     return false;
