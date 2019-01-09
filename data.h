@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 /** Struct to represent the course. */
 typedef struct Course {
@@ -48,8 +49,9 @@ void addCourse(Data *data, const char *course, int hours, const char *grade);
   *
   * @param data - the pointer to the data
   * @param courseName - the name of the course to remove
+  * @return true if the course was removed, false if course not found
   */
-void removeCourse(Data *data, const char *courseName);
+bool removeCourse(Data *data, const char *courseName);
 
 /**
   * Frees the data and everything else.

@@ -201,7 +201,9 @@ void removeCommand(Data *data) {
   char *courseName = (char *)malloc(1024);
   fscanf(stdin, "%s%*[^\n]\n", courseName);
   toUpperCase(courseName);
-  removeCourse(data, courseName);
+  if (!removeCourse(data, courseName)) {
+    fprintf(stdout, "Course %s not found\n", courseName);
+  }
   free(courseName);
 }
 

@@ -43,23 +43,32 @@ void addCourse(Data *data, const char *course, int hours, const char *grade) {
   data->size++;
 }
 
-void removeCourse(Data *data, const char *courseName) {
+bool removeCourse(Data *data, const char *courseName) {
+  bool removed = false;
   data->current = data->course;
   if (strcmp(data->current->name, courseName) == 0) {
     data->current = data->current->next;
     data->course = data->current;
+    removed = true;
+
+    data->size--;
+    data->totalCredits -= data->current->hours;
   } else {
     Course *prev = data->current;
     while (data->current->next != NULL) {
       data->current = data->current->next;
       if (strcmp(data->current->name, courseName) == 0) {
         prev->next = data->current->next;
+        removed = true;
+
+        data->size--;
+        data->totalCredits -= data->current->hours;
         break;
       }
       prev = data->current;
     }
-    fprintf(stdout, "Course %s does not exist\n", courseName);
   }
+  return removed;
 }
 
 void freeData(Data *data) {
