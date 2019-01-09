@@ -257,5 +257,7 @@ int main(void) {
       fail("Matches was not 1");
     }
   }
+  freeData(data);
+  free(data);
   return EXIT_SUCCESS;
 }

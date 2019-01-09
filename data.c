@@ -44,6 +44,11 @@ void addCourse(Data *data, const char *course, int hours, const char *grade) {
   data->size++;
 }
 
+/**
+  * Removes all courses and frees all memory.
+  *
+  * @param data - pointer to data
+  */
 void freeAllCourses(Data *data) {
   data->current = data->course;
   free(data->current->name);
@@ -101,5 +106,7 @@ bool removeCourse(Data *data, const char *courseName) {
 }
 
 void freeData(Data *data) {
-
+  freeAllCourses(data);
+  free(data->course);
+  free(data->current);
 }
