@@ -108,7 +108,7 @@ bool removeCourse(Data *data, const char *courseName) {
 void freeData(Data *data) {
   if (data->size != 0) {
     freeAllCourses(data);
-    free(data->course);
-    free(data->current);
+    // free(data->course);
+    // free(data->current);
   }
 }
