@@ -127,11 +127,15 @@ void addCommand(Data *data) {
   int matches = fscanf(stdin, "%s%d%s%*[^\n]\n", course, &creditHours, letterGrade);
   if (matches != 3) {
     fprintf(stdout, "Invalid command\n");
+    free(course);
+    free(letterGrade);
     return;
   }
   toUpperCase(course);
   if (!isValidGrade(letterGrade)) {
     fprintf(stdout, "Invalid grade.\n");
+    free(course);
+    free(letterGrade);
     return;
   }
 
@@ -140,12 +144,16 @@ void addCommand(Data *data) {
     if (dupCheckCourse != NULL) {
       fprintf(stdout, "Duplicate course %s already in the system.\n", course);
       fprintf(stdout, "Duplicate course: %s\tCredit Hours: %d\tGrade: \"%s\"\n\n", dupCheckCourse->name, dupCheckCourse->hours, dupCheckCourse->letterGrade);
+      free(course);
+      free(letterGrade);
       return;
     }
   }
 
   addCourse(data, course, creditHours, letterGrade);
   fprintf(stdout, "%s with %d credit hours - \"%s\" earned.\tAdded\n", course, creditHours, letterGrade);
+  free(course);
+  free(letterGrade);
 }
 
 /**
