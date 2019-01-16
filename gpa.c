@@ -173,16 +173,6 @@ void removeCommand(Data *data) {
 }
 
 /**
-  * Prints the header and the program information at the beginning.
-  */
-void printHeader() {
-  fprintf(stdout, "GPA Calculator by John Choi 2018\n");
-  fprintf(stdout, "Version 1.0\n");
-  fprintf(stdout, "To add a course, \"add [COURSE] [HOURS] [LETTERGRADE]\"\n");
-  fprintf(stdout, "Type \"help\" to see the full list of commands\n\n");
-}
-
-/**
   * Driver function for this program.
   *
   * @return EXIT_SUCCESS if the program terminates correctly

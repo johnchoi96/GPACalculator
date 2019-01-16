@@ -10,6 +10,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void printHeader() {
+  fprintf(stdout, "GPA Calculator by John Choi 2018\n");
+  fprintf(stdout, "Version 1.0\n");
+  fprintf(stdout, "To add a course, \"add [COURSE] [HOURS] [LETTERGRADE]\"\n");
+  fprintf(stdout, "Type \"help\" to see the full list of commands\n\n");
+}
+
 void helpCommand() {
   fprintf(stdout, "\nUsage:\n");
   fprintf(stdout, "\tlist\n");
