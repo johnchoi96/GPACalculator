@@ -42,7 +42,6 @@ void addCourse(Data *data, const char *course, int hours, const char *grade) {
     data->current = data->course;
   }
   data->size++;
-  free(newCourse);
 }
 
 /**
