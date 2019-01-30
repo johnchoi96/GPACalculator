@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 01092019
+  * @since 01302019
   *
   * Driver file for this program.
   */
@@ -14,6 +14,17 @@
 #include <string.h>
 #include <strings.h>
 #include <stdbool.h>
+#include <ctype.h>
+
+#define MAX_TOKENS 1024
+
+/* Every simple command has one of these associated with it */
+typedef struct {
+	char* token[MAX_TOKENS]; /* tokens of the command */
+	int count; /* the number of tokens */ /* count - 2 gives the last argument */
+} Command;
+
+Command *parseSequence();
 
 /**
   * Prints out failure message and terminates program.
@@ -120,20 +131,53 @@ void toUpperCase(char *name) {
   *
   * @param data - pointer to the data
   */
-void addCommand(Data *data) {
+void addCommand(Data *data, Command *cmd) {
   char *course = (char *)malloc(1024);
   int creditHours;
   char *letterGrade = (char *)malloc(1024);
-  int matches = fscanf(stdin, "%s%d%s%*[^\n]\n", course, &creditHours, letterGrade);
-  if (matches != 3) {
-    fprintf(stdout, "Invalid command\n");
+  if (cmd->count == 5) {
+    strcpy(course, cmd->token[1]);
+    /*if (strlen(cmd->token[2]) >= 2 || isdigit(cmd->token[2]) != 0) {
+      free(course);
+      free(letterGrade);
+      fprintf(stdout, "Invalid credit hours\n");
+      return;
+    }*/
+    
+    creditHours = atoi(cmd->token[2]);
+    if (creditHours == 0) {
+      free(course);
+      free(letterGrade);
+      fprintf(stdout, "Invalid credit hours\n");
+      return;
+    }
+    strcpy(letterGrade, cmd->token[3]);
+  } else if (cmd->count == 6) {
+    strcpy(course, cmd->token[1]);
+    strcat(course, cmd->token[2]);
+    /*if (strlen(cmd->token[3]) >= 2 || isdigit(cmd->token[3]) != 0) {
+      free(course);
+      free(letterGrade);
+      fprintf(stdout, "Invalid credit hours\n");
+      return;
+    }*/
+    creditHours = atoi(cmd->token[3]);
+    if (creditHours == 0) {
+      free(course);
+      free(letterGrade);
+      fprintf(stdout, "Invalid credit hours\n");
+      return;
+    }
+    strcpy(letterGrade, cmd->token[4]);
+  } else {
     free(course);
     free(letterGrade);
+    fprintf(stdout, "Invalid command\n");
     return;
   }
   toUpperCase(course);
   if (!isValidGrade(letterGrade)) {
-    fprintf(stdout, "Invalid grade.\n");
+    fprintf(stdout, "Invalid grade\n");
     free(course);
     free(letterGrade);
     return;
@@ -162,9 +206,18 @@ void addCommand(Data *data) {
   *
   * @param data - pointer to the data
   */
-void removeCommand(Data *data) {
+void removeCommand(Data *data, Command *cmd) {
   char *courseName = (char *)malloc(1024);
-  fscanf(stdin, "%s%*[^\n]\n", courseName);
+  if (cmd->count == 3) { //handles remove csc316
+    strcpy(courseName, cmd->token[1]);
+  } else if (cmd->count == 4) {
+    strcpy(courseName, cmd->token[1]);
+    strcat(courseName, cmd->token[2]);
+  } else {
+    free(courseName);
+    fprintf(stdout, "Invalid command\n");
+    return;
+  }
   toUpperCase(courseName);
   if (!removeCourse(data, courseName)) {
     fprintf(stdout, "Course %s not found\n", courseName);
@@ -180,40 +233,70 @@ void removeCommand(Data *data) {
 int main(void) {
   printHeader();
   char *command = (char *)malloc(1024);
-  fprintf(stdout, "cmd> ");
-  int matches = fscanf(stdin, "%s", command);
-  if (matches != 1) {
-    free(command);
-    fail("Matches was not 1");
-  }
   Data *data = initializeData();
-  while (strcmp(command, "quit") != 0) {
-    if (strcmp(command, "calculate") == 0) {
-      fscanf(stdin, "%*[^\n]\n"); //clears the input buffer
-      calculateCommand(data);
-    } else if (strcmp(command, "add") == 0) {
-      addCommand(data);
-    } else if (strcmp(command, "remove") == 0) {
-      removeCommand(data);
-    } else if (strcmp(command, "help") == 0) {
-      helpCommand();
-    } else if (strcmp(command, "list") == 0) {
-      listCommand(data);
-    } else if (strcmp(command, "chart") == 0) {
-      chartCommand();
-    } else {
-      fprintf(stdout, "Invalid command\n");
-    }
-
+  while (1) {
     fprintf(stdout, "cmd> ");
-    matches = fscanf(stdin, "%s", command);
-    if (matches != 1) {
-      free(command);
-      fail("Matches was not 1");
+    int matches = fscanf(stdin, "%[^\n]", command);
+    fscanf(stdin, "%*c");
+    Command *cmd = parseSequence(command);
+    if (matches != 1 || cmd->count == 1) {
+      continue;
     }
+    if (strcmp(cmd->token[0], "calculate") == 0) {
+      calculateCommand(data);
+    } else if (strcmp(cmd->token[0], "add") == 0) {
+      addCommand(data, cmd);
+    } else if (strcmp(cmd->token[0], "remove") == 0) {
+      removeCommand(data, cmd);
+    } else if (strcmp(cmd->token[0], "help") == 0) {
+      helpCommand();
+    } else if (strcmp(cmd->token[0], "list") == 0) {
+      listCommand(data);
+    } else if (strcmp(cmd->token[0], "chart") == 0) {
+      chartCommand();
+    } else if (strcmp(cmd->token[0], "quit") == 0) {
+      free(cmd);
+      break;
+    } else {
+      fprintf(stdout, "Command not found\n");
+    }
+    free(cmd);
   }
   freeData(data);
-  free(data);
   free(command);
   return EXIT_SUCCESS;
+}
+
+/**
+  * "parseSequence" function is used to parse the char line got from the
+  * standard input into the simple structure to pass arguments into system
+  * calls later.
+  *
+  * @param line - stdin
+  * @return c pointer to the command struct
+  */
+Command *parseSequence(char *line) {
+	int i, t;
+	Command *c = (Command *)malloc(sizeof(Command));
+	t = 0;
+	i = 0;
+	while (isspace(line[i])) {
+		i++;
+	}
+	c->token[t] = &line[i];
+	while (line[i] != '\0' && t < MAX_TOKENS - 1) {
+		t++;
+		while (!isspace(line[i]) && line[i] != '\0') {
+			i++;
+    }
+		while (isspace(line[i])) {
+			line[i] = '\0';
+			i++;
+		}
+		c->token[t] = &line[i];
+	}
+	c->count = t + 1;
+	c->token[t] = NULL;
+
+	return c;
 }

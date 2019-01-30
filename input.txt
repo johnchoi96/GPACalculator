@@ -1,9 +1,8 @@
 add csc316 3 a
-add csc216 4 c
+add csc216 4 b
 add csc116 3 a
-add csc200 3 a-
-add csc281 3 a
-add csc236 3 a
-add csc246 3 a
+add st370 4 b
+list
+remove csc116
 list
 quit
