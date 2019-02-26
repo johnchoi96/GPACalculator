@@ -78,7 +78,7 @@ bool removeCourse(Data *data, const char *courseName) {
     data->size--;
     data->totalCredits -= data->current->hours;
   } else {
-    Course *nextnext = data->current->next->next; // csc316->csc216->csc116->NULL
+    Course *nextnext = data->current->next->next;
     if (strcmp(data->current->next->name, courseName) == 0) {
       data->size--;
       data->totalCredits -= data->current->next->hours;
