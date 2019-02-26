@@ -7,6 +7,7 @@
   */
 
 #include "data.h"
+#include "calculate.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

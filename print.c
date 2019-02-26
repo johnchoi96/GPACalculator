@@ -1,7 +1,7 @@
 /**
   * @file print.c
   * @author John Choi
-  * @since 01092019
+  * @since 02252019
   *
   * Handles simple printing job.
   */
@@ -25,7 +25,7 @@ void helpCommand() {
   fprintf(stdout, "\tadd [COURSE] [HOURS] [GRADE]\n");
   fprintf(stdout, "\tremove [COURSE]\n");
   fprintf(stdout, "\tremove all\n");
-  fprintf(stdout, "\tquit\n");
+  fprintf(stdout, "\tquit or exit\n");
 }
 
 void chartCommand() {

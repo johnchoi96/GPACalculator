@@ -1,7 +1,7 @@
 /**
   * @file data.h
   * @author John Choi
-  * @since 01062019
+  * @since 02252019
   *
   * Header file that defines the struct, function prototypes,
   * and the data structure required for this program.
@@ -11,12 +11,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#ifndef _DATAH_
+#define _DATAH_
 /** Struct to represent the course. */
-typedef struct Course {
+typedef struct _Course {
   char *name;
   int hours;
   char *letterGrade;
-  struct Course *next;
+  struct _Course *next;
 } Course;
 
 /** Struct to represent the data. */
@@ -59,3 +61,5 @@ bool removeCourse(Data *data, const char *courseName);
   * @param data - the pointer to the data
   */
 void freeData(Data *data);
+
+#endif

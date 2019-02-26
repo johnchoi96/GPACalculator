@@ -1,11 +1,13 @@
 /**
   * @file print.h
   * @author John Choi
-  * @since 01092019
+  * @since 02252019
   *
   * Handles simple printing job.
   */
 
+#ifndef _PRINTH_
+#define _PRINTH_
 
 /**
   * Prints the header and the program information at the beginning.
@@ -21,3 +23,5 @@ void helpCommand();
   * Prints the GPA chart.
   */
 void chartCommand();
+
+#endif

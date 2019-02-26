@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 01302019
+  * @since 02252019
   *
   * Driver file for this program.
   */
@@ -254,7 +254,7 @@ int main(void) {
       listCommand(data);
     } else if (strcmp(cmd->token[0], "chart") == 0) {
       chartCommand();
-    } else if (strcmp(cmd->token[0], "quit") == 0) {
+    } else if (strcmp(cmd->token[0], "quit") == 0i || strcmp(cmd->token[0], "exit") == 0) {
       free(cmd);
       break;
     } else {
