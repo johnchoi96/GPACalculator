@@ -10,3 +10,5 @@ print.o: print.c print.h
 clean:
 	rm -rf *.o
 	rm -rf *.gch
+	rm gpa
+	rm gpa.exe

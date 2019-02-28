@@ -17,10 +17,10 @@ void freeAllCourses();
 
 Data *initializeData() {
   Data *data = (Data *)malloc(sizeof(Data));
+  data->capacity = 20;
   data->size = 0;
   data->totalCredits = 0;
-  data->course = NULL;
-  data->current = NULL;
+  data->courseList = (Course *)malloc(data->capacity * sizeof(Course));
   return data;
 }
 

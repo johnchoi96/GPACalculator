@@ -5,6 +5,7 @@
   *
   * Header file that defines the struct, function prototypes,
   * and the data structure required for this program.
+  * Edit 
   */
 
 #include <stdio.h>
@@ -18,15 +19,15 @@ typedef struct _Course {
   char *name;
   int hours;
   char *letterGrade;
-  struct _Course *next;
 } Course;
 
 /** Struct to represent the data. */
+/** ArrayList */
 typedef struct {
+  int capacity;
   int size;
   int totalCredits;
-  Course *course; //head
-  Course *current;
+  Course *courseList;
 } Data;
 
 /**
