@@ -1,11 +1,11 @@
 /**
   * @file data.h
   * @author John Choi
-  * @since 02252019
+  * @since 02282019
   *
   * Header file that defines the struct, function prototypes,
   * and the data structure required for this program.
-  * Edit 
+  * Edit 02282019: Switching from LinkedList to ArrayList. 
   */
 
 #include <stdio.h>

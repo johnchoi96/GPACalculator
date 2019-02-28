@@ -59,11 +59,9 @@ double calculateGPA(Data *data) {
   if (data->size == 0) {
     return 0;
   }
-  data->current = data->course;
-  gpa += (convertToNumeric(data->current->letterGrade) * data->current->hours);
-  while (data->current->next != NULL) {
-    data->current = data->current->next;
-    gpa += (convertToNumeric(data->current->letterGrade) * data->current->hours);
+
+  for (int i = 0; i < data->size; i++) {
+    gpa += (convertToNumeric(data->courseList[i].letterGrade) * data->courseList[i].hours);
   }
   gpa /= data->totalCredits;
   return gpa;
