@@ -1,4 +1,5 @@
 *.o
 valgrind
 *.gch
-
+gpa
+gpa.exe
