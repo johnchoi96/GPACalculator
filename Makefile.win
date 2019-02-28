@@ -1,5 +1,5 @@
 CC = i686-w64-mingw32-gcc
-CFLAGS = -Wall -std=c99
+CFLAGS = -Wall
 
 all: gpa.exe
 gpa.exe: gpa.o data.o calculate.o print.o

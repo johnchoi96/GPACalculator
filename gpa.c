@@ -37,19 +37,29 @@ void fail(const char *msg) {
 }
 
 /**
-  * Prints out the list of added courses.
+	* Compares two course objects to sort them in
+	* alphabetical order.
+	*
+	* @param a void pointer to the first course
+	* @param b void pointer to the second course
+	* @return difference
+	*/
+int compare(const void *a, const void *b) {
+	Course *firstCourse = (Course *)a;
+	Course *secondCourse = (Course *)b;
+	return strcmp(firstCourse->name, secondCourse->name);
+}
+
+/**
+  * Sorts and prints out the list of added courses.
   *
   * @param data - pointer to the data
   */
 void listCommand(Data *data) {
-  if (data->size != 0) {
-    data->current = data->course;
-    fprintf(stdout, "%7s%3d Hours %7s earned\n", data->current->name, data->current->hours, data->current->letterGrade);
-    while (data->current->next != NULL) {
-      data->current = data->current->next;
-      fprintf(stdout, "%7s%3d Hours %7s earned\n", data->current->name, data->current->hours, data->current->letterGrade);
-    }
-  }
+	qsort(data->courseList, data->size, sizeof(Course), compare);
+	for (int i = 0; i < data->size; i++) {
+		fprintf(stdout, "%7s%3d Hours %7s earned\n", data->courseList[i].name, data->courseList[i].hours, data->courseList[i].letterGrade);
+	}
   fprintf(stdout, "Total of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
 }
 
@@ -73,16 +83,11 @@ void calculateCommand(Data *data) {
   * @return pointer to the course with the given name or NULL if does not exist
   */
 Course *findCourse(Data *data, const char *name) {
-  data->current = data->course;
-  if (strcasecmp(data->current->name, name) == 0) {
-    return data->current;
-  }
-  while (data->current->next != NULL) {
-    data->current = data->current->next;
-    if (strcasecmp(data->current->name, name) == 0) {
-      return data->current;
-    }
-  }
+	for (int i = 0; i < data->size; i++) {
+		if (strcmp(name, data->courseList[i].name) == 0) {
+			return &data->courseList[i];
+		}
+	}
   return NULL;
 }
 
@@ -137,13 +142,7 @@ void addCommand(Data *data, Command *cmd) {
   char *letterGrade = (char *)malloc(1024);
   if (cmd->count == 5) {
     strcpy(course, cmd->token[1]);
-    /*if (strlen(cmd->token[2]) >= 2 || isdigit(cmd->token[2]) != 0) {
-      free(course);
-      free(letterGrade);
-      fprintf(stdout, "Invalid credit hours\n");
-      return;
-    }*/
-    
+
     creditHours = atoi(cmd->token[2]);
     if (creditHours == 0) {
       free(course);
@@ -155,12 +154,6 @@ void addCommand(Data *data, Command *cmd) {
   } else if (cmd->count == 6) {
     strcpy(course, cmd->token[1]);
     strcat(course, cmd->token[2]);
-    /*if (strlen(cmd->token[3]) >= 2 || isdigit(cmd->token[3]) != 0) {
-      free(course);
-      free(letterGrade);
-      fprintf(stdout, "Invalid credit hours\n");
-      return;
-    }*/
     creditHours = atoi(cmd->token[3]);
     if (creditHours == 0) {
       free(course);

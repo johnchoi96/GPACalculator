@@ -1,7 +1,7 @@
 /**
   * @file print.c
   * @author John Choi
-  * @since 02252019
+  * @since 02282019
   *
   * Handles simple printing job.
   */
@@ -12,7 +12,7 @@
 
 void printHeader() {
   fprintf(stdout, "GPA Calculator by John Choi 2019\n");
-  fprintf(stdout, "Version 1.0\n");
+  fprintf(stdout, "Version 1.1\n");
   fprintf(stdout, "To add a course, \"add [COURSE] [HOURS] [LETTERGRADE]\"\n");
   fprintf(stdout, "Type \"help\" to see the full list of commands\n\n");
 }
