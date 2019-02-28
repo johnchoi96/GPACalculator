@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -std=c99 -g
+CFLAGS = -Wall -g
 
 gpa: gpa.o data.o calculate.o print.o
 gpa.o: gpa.c data.h print.h
@@ -10,5 +10,3 @@ print.o: print.c print.h
 clean:
 	rm -rf *.o
 	rm -rf *.gch
-	rm gpa
-	rm gpa.exe

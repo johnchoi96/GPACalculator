@@ -25,15 +25,13 @@ Data *initializeData() {
 }
 
 void addCourse(Data *data, const char *course, int hours, const char *grade) {
-  //first, make a new course
   data->totalCredits += hours;
-  Course *newCourse = (Course *)malloc(sizeof(Course));
-  newCourse->name = (char *)malloc(1024);
-  newCourse->letterGrade = (char *)malloc(1024);
-  newCourse->hours = hours;
-  strcpy(newCourse->name, course);
-  strcpy(newCourse->letterGrade, grade);
-
+  
+  //first, make a new course
+  Course newCourse;
+  newCourse.name = strdup(course);
+  newCourse.letterGrade = strdup(grade);
+  newCourse.hours = hours;
   if (data->size >= data->capacity) {
     data->capacity += 20;
     Course *newCourseList = (Course *)calloc(data->capacity, sizeof(Course));
@@ -47,16 +45,16 @@ void addCourse(Data *data, const char *course, int hours, const char *grade) {
     }
     free(newCourseList);
   }
-  data->courseList[data->size] = *newCourse;
+  data->courseList[data->size] = newCourse;
   data->size++;
 }
 
 bool removeCourse(Data *data, const char *courseName) {
   if (strcasecmp(courseName, "all") == 0) {
+    freeAllCourses(data);
     data->size = 0;
     data->totalCredits = 0;
     data->capacity = 20;
-    freeAllCourses(data);
     data->courseList = (Course *)malloc(data->capacity * sizeof(Course));
     return true;
   }
@@ -68,6 +66,8 @@ bool removeCourse(Data *data, const char *courseName) {
   for (index = 0; index < data->size; index++) {
     if (strcmp(courseName, data->courseList[index].name) == 0) {
       removed = true;
+      free(data->courseList[index].name);
+      free(data->courseList[index].letterGrade);
       data->totalCredits -= data->courseList[index].hours;
       break;
     }

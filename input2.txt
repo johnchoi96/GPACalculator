@@ -1,0 +1,8 @@
+add csc316 3 a
+add csc216 4 c
+add csc116 3 a
+add csc236 3 a
+add csc281 4 b
+list
+quit
+
