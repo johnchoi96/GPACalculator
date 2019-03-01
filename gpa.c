@@ -137,11 +137,11 @@ void toUpperCase(char *name) {
   * @param data - pointer to the data
   */
 void addCommand(Data *data, Command *cmd) {
-  char *course = (char *)malloc(1024);
+  char *course = NULL;
   int creditHours;
-  char *letterGrade = (char *)malloc(1024);
+  char *letterGrade = NULL;
   if (cmd->count == 5) {
-    strcpy(course, cmd->token[1]);
+		course = strdup(cmd->token[1]);
 
     creditHours = atoi(cmd->token[2]);
     if (creditHours == 0) {
@@ -150,9 +150,9 @@ void addCommand(Data *data, Command *cmd) {
       fprintf(stdout, "Invalid credit hours\n");
       return;
     }
-    strcpy(letterGrade, cmd->token[3]);
+		letterGrade = strdup(cmd->token[3]);
   } else if (cmd->count == 6) {
-    strcpy(course, cmd->token[1]);
+		course = strdup(cmd->token[1]);
     strcat(course, cmd->token[2]);
     creditHours = atoi(cmd->token[3]);
     if (creditHours == 0) {
@@ -161,7 +161,7 @@ void addCommand(Data *data, Command *cmd) {
       fprintf(stdout, "Invalid credit hours\n");
       return;
     }
-    strcpy(letterGrade, cmd->token[4]);
+		letterGrade = strdup(cmd->token[4]);
   } else {
     free(course);
     free(letterGrade);
@@ -200,11 +200,11 @@ void addCommand(Data *data, Command *cmd) {
   * @param data - pointer to the data
   */
 void removeCommand(Data *data, Command *cmd) {
-  char *courseName = (char *)malloc(1024);
+  char *courseName = NULL;
   if (cmd->count == 3) { //handles remove csc316
-    strcpy(courseName, cmd->token[1]);
+		courseName = strdup(cmd->token[1]);
   } else if (cmd->count == 4) {
-    strcpy(courseName, cmd->token[1]);
+		courseName = strdup(cmd->token[1]);
     strcat(courseName, cmd->token[2]);
   } else {
     free(courseName);
@@ -247,7 +247,7 @@ int main(void) {
       listCommand(data);
     } else if (strcmp(cmd->token[0], "chart") == 0) {
       chartCommand();
-    } else if (strcmp(cmd->token[0], "quit") == 0i || strcmp(cmd->token[0], "exit") == 0) {
+    } else if (strcmp(cmd->token[0], "quit") == 0 || strcmp(cmd->token[0], "exit") == 0) {
       free(cmd);
       break;
     } else {
