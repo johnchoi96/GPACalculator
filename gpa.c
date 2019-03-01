@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 02252019
+  * @since 03012019
   *
   * Driver file for this program.
   */
@@ -99,7 +99,7 @@ Course *findCourse(Data *data, const char *name) {
   * @param grade - pointer to the grade
   * @return true if grade is valid
   */
-bool isValidGrade(char *grade) { //TODO only A, B, C, D, F are valid
+bool isValidGrade(char *grade) {
   if (strlen(grade) > 3) {
     return false;
   }
