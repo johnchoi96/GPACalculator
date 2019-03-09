@@ -7,6 +7,7 @@
   */
 
 #include "data.h"
+#include "file.h"
 #include "calculate.h"
 #include "print.h"
 #include <stdio.h>
@@ -34,6 +35,31 @@ Command *parseSequence();
 void fail(const char *msg) {
   fprintf(stderr, "%s\n", msg);
   exit(EXIT_FAILURE);
+}
+
+/**
+  * Defines behavior for export command.
+  * Exports to the savefile.gpa file.
+  *
+  * @param data - pointer to the data struct
+  */
+void exportCommand(Data *data) {
+  export(data, "savefile.gpa");
+}
+
+/**
+  * Defines behavior for import command.
+  * Imports from the savefile.gpa file.
+  *
+  * @param data - pointer to the data struct
+  */
+void importCommand(Data *data) {
+  if (!canImport) {
+    fprintf(stdout, "Please clear current course entries with \"remove all\" command.\n\n");
+    return;
+  }
+  canImport = false;
+  import(data, "savefile.gpa");
 }
 
 /**
@@ -248,6 +274,7 @@ void removeCommand(Data *data, Command *cmd) {
   * @return EXIT_SUCCESS if the program terminates correctly
   */
 int main(void) {
+  canImport = true;
   printHeader();
   char *command = (char *)malloc(1024);
   Data *data = initializeData();
@@ -271,6 +298,12 @@ int main(void) {
       listCommand(data);
     } else if (strcmp(cmd->token[0], "chart") == 0) {
       chartCommand();
+    } else if (strcmp(cmd->token[0], "export") == 0) {
+      exportCommand(data);
+    } else if (strcmp(cmd->token[0], "import") == 0) {
+      importCommand(data);
+    } else if (strcmp(cmd->token[0], "about") == 0) {
+      aboutCommand();
     } else if (strcmp(cmd->token[0], "quit") == 0 || strcmp(cmd->token[0], "exit") == 0) {
       free(cmd);
       break;

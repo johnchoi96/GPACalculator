@@ -24,4 +24,9 @@ void helpCommand();
   */
 void chartCommand();
 
+/**
+  * Prints about page.
+  */
+void aboutCommand();
+
 #endif
