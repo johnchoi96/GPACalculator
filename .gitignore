@@ -2,4 +2,4 @@
 valgrind
 *.gch
 gpa
-gpa.exe
+*.exe
