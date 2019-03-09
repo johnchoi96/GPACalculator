@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 03012019
+  * @since 03092019
   *
   * Driver file for this program.
   */
@@ -56,7 +56,6 @@ int compare(const void *a, const void *b) {
   * @param data - pointer to the data
   */
 void listCommand(Data *data) {
-	qsort(data->courseList, data->size, sizeof(Course), compare);
 	for (int i = 0; i < data->size; i++) {
 		fprintf(stdout, "%7s%3d Hours %7s earned\n", data->courseList[i].name, data->courseList[i].hours, data->courseList[i].letterGrade);
 	}
@@ -75,20 +74,43 @@ void calculateCommand(Data *data) {
 }
 
 /**
+  * Uses binary search method to find the course in the list.
+  * Produces O(log n) runtime at worst case.
+  *
+  * @param courseList - sorted list of courses
+  * @param lowIndex bottom index
+  * @param highIndex top index
+  * @param name - target name of the course to find
+  * @return pointer to the found course, NULL if not found
+  */
+Course *binarySearchCourse(Course *courseList, int lowIndex, int highIndex, const char *name) {
+  // Base condition
+	if (lowIndex > highIndex) {
+		return NULL;
+	}
+
+	int midIndex = (lowIndex + highIndex) / 2;
+
+	// Base condition (target value is found)
+	if (strcmp(name, courseList[midIndex].name) == 0) {
+		return &courseList[midIndex];
+  } else if (strcmp(name, courseList[midIndex].name) < 0) {
+		return binarySearchCourse(courseList, lowIndex,  midIndex - 1, name);
+  } else {
+		return binarySearchCourse(courseList, midIndex + 1,  highIndex, name);
+  }
+}
+
+/**
   * Finds and returns the pointer to the course with the given name.
-  * O(n) linear search method.
+  * O(log n) binary search method.
   *
   * @param data - pointer to the data
   * @param name - name of the course to find
   * @return pointer to the course with the given name or NULL if does not exist
   */
 Course *findCourse(Data *data, const char *name) {
-	for (int i = 0; i < data->size; i++) {
-		if (strcmp(name, data->courseList[i].name) == 0) {
-			return &data->courseList[i];
-		}
-	}
-  return NULL;
+	return binarySearchCourse(data->courseList, 0, data->size - 1, name);
 }
 
 /**
@@ -133,6 +155,7 @@ void toUpperCase(char *name) {
 
 /**
   * Defines a behavior for the add command.
+  * Sorts the list after addition.
   *
   * @param data - pointer to the data
   */
@@ -186,8 +209,9 @@ void addCommand(Data *data, Command *cmd) {
       return;
     }
   }
-
+  
   addCourse(data, course, creditHours, letterGrade);
+	qsort(data->courseList, data->size, sizeof(Course), compare);
   fprintf(stdout, "%s with %d credit hours - \"%s\" earned.\tAdded\n", course, creditHours, letterGrade);
   free(course);
   free(letterGrade);
