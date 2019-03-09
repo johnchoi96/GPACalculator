@@ -1,12 +1,13 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 03012019
+  * @since 03092019
   *
   * Driver file for this program.
   */
 
 #include "data.h"
+#include "file.h"
 #include "calculate.h"
 #include "print.h"
 #include <stdio.h>
@@ -37,6 +38,31 @@ void fail(const char *msg) {
 }
 
 /**
+  * Defines behavior for export command.
+  * Exports to the savefile.gpa file.
+  *
+  * @param data - pointer to the data struct
+  */
+void exportCommand(Data *data) {
+  export(data, "savefile.gpa");
+}
+
+/**
+  * Defines behavior for import command.
+  * Imports from the savefile.gpa file.
+  *
+  * @param data - pointer to the data struct
+  */
+void importCommand(Data *data) {
+  if (!canImport) {
+    fprintf(stdout, "Please clear current course entries with \"remove all\" command.\n\n");
+    return;
+  }
+  canImport = false;
+  import(data, "savefile.gpa");
+}
+
+/**
 	* Compares two course objects to sort them in
 	* alphabetical order.
 	*
@@ -56,7 +82,6 @@ int compare(const void *a, const void *b) {
   * @param data - pointer to the data
   */
 void listCommand(Data *data) {
-	qsort(data->courseList, data->size, sizeof(Course), compare);
 	for (int i = 0; i < data->size; i++) {
 		fprintf(stdout, "%7s%3d Hours %7s earned\n", data->courseList[i].name, data->courseList[i].hours, data->courseList[i].letterGrade);
 	}
@@ -75,20 +100,43 @@ void calculateCommand(Data *data) {
 }
 
 /**
+  * Uses binary search method to find the course in the list.
+  * Produces O(log n) runtime at worst case.
+  *
+  * @param courseList - sorted list of courses
+  * @param lowIndex bottom index
+  * @param highIndex top index
+  * @param name - target name of the course to find
+  * @return pointer to the found course, NULL if not found
+  */
+Course *binarySearchCourse(Course *courseList, int lowIndex, int highIndex, const char *name) {
+  // Base condition
+	if (lowIndex > highIndex) {
+		return NULL;
+	}
+
+	int midIndex = (lowIndex + highIndex) / 2;
+
+	// Base condition (target value is found)
+	if (strcmp(name, courseList[midIndex].name) == 0) {
+		return &courseList[midIndex];
+  } else if (strcmp(name, courseList[midIndex].name) < 0) {
+		return binarySearchCourse(courseList, lowIndex,  midIndex - 1, name);
+  } else {
+		return binarySearchCourse(courseList, midIndex + 1,  highIndex, name);
+  }
+}
+
+/**
   * Finds and returns the pointer to the course with the given name.
-  * O(n) linear search method.
+  * O(log n) binary search method.
   *
   * @param data - pointer to the data
   * @param name - name of the course to find
   * @return pointer to the course with the given name or NULL if does not exist
   */
 Course *findCourse(Data *data, const char *name) {
-	for (int i = 0; i < data->size; i++) {
-		if (strcmp(name, data->courseList[i].name) == 0) {
-			return &data->courseList[i];
-		}
-	}
-  return NULL;
+	return binarySearchCourse(data->courseList, 0, data->size - 1, name);
 }
 
 /**
@@ -133,6 +181,7 @@ void toUpperCase(char *name) {
 
 /**
   * Defines a behavior for the add command.
+  * Sorts the list after addition.
   *
   * @param data - pointer to the data
   */
@@ -186,8 +235,9 @@ void addCommand(Data *data, Command *cmd) {
       return;
     }
   }
-
+  
   addCourse(data, course, creditHours, letterGrade);
+	qsort(data->courseList, data->size, sizeof(Course), compare);
   fprintf(stdout, "%s with %d credit hours - \"%s\" earned.\tAdded\n", course, creditHours, letterGrade);
   free(course);
   free(letterGrade);
@@ -224,6 +274,7 @@ void removeCommand(Data *data, Command *cmd) {
   * @return EXIT_SUCCESS if the program terminates correctly
   */
 int main(void) {
+  canImport = true;
   printHeader();
   char *command = (char *)malloc(1024);
   Data *data = initializeData();
@@ -247,6 +298,12 @@ int main(void) {
       listCommand(data);
     } else if (strcmp(cmd->token[0], "chart") == 0) {
       chartCommand();
+    } else if (strcmp(cmd->token[0], "export") == 0) {
+      exportCommand(data);
+    } else if (strcmp(cmd->token[0], "import") == 0) {
+      importCommand(data);
+    } else if (strcmp(cmd->token[0], "about") == 0) {
+      aboutCommand();
     } else if (strcmp(cmd->token[0], "quit") == 0 || strcmp(cmd->token[0], "exit") == 0) {
       free(cmd);
       break;

@@ -14,6 +14,9 @@
 
 #ifndef _DATAH_
 #define _DATAH_
+
+bool canImport;
+
 /** Struct to represent the course. */
 typedef struct _Course {
   char *name;

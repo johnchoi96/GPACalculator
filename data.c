@@ -25,6 +25,7 @@ Data *initializeData() {
 }
 
 void addCourse(Data *data, const char *course, int hours, const char *grade) {
+  canImport = false;
   data->totalCredits += hours;
   
   //first, make a new course
@@ -52,6 +53,7 @@ void addCourse(Data *data, const char *course, int hours, const char *grade) {
 bool removeCourse(Data *data, const char *courseName) {
   if (strcasecmp(courseName, "all") == 0) {
     freeAllCourses(data);
+    canImport = true;
     data->size = 0;
     data->totalCredits = 0;
     data->capacity = 20;
