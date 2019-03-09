@@ -1,9 +1,9 @@
 CC = i686-w64-mingw32-gcc
 CFLAGS = -Wall
 
-all: gpa.exe
-gpa.exe: gpa.o data.o calculate.o print.o file.o
-	$(CC) -o gpa.exe gpa.o data.o calculate.o print.o file.o
+all: GPACalculator.exe
+GPACalculator.exe: gpa.o data.o calculate.o print.o file.o
+	$(CC) -o GPACalculator.exe gpa.o data.o calculate.o print.o file.o
 gpa.o: gpa.c data.h print.h
 	$(CC) -c gpa.c data.h print.h
 data.o: data.c data.h
