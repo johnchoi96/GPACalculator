@@ -1,7 +1,7 @@
 /**
   * @file calculate.c
   * @author John Choi
-  * @since 01072019
+  * @since 05082019
   *
   * Calculates overall GPA based on the courses added to the data.
   */

@@ -289,7 +289,7 @@ void removeCommand(Data *data, Command *cmd) {
   */
 int main(void) {
   canImport = true;
-	creditOnly = 0;
+	creditOnlyHours = 0;
   printHeader();
   char *command = (char *)malloc(1024);
   Data *data = initializeData();
