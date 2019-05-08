@@ -41,27 +41,43 @@ void fail(const char *msg) {
 
 /**
   * Defines behavior for export command.
-  * Exports to the savefile.gpa file.
+  * Exports to the savefile.gpa file if name is not specified.
   *
   * @param data - pointer to the data struct
   */
-void exportCommand(Data *data) {
-  export(data, "savefile.gpa");
+void exportCommand(Data *data, Command *cmd) {
+  char *fullName = (char *)malloc(MAX_TOKENS);
+  if (cmd->count == 2) {
+    sprintf(fullName, "%s", "savefile.gpa");
+  } else if (cmd->count == 3) {
+    sprintf(fullName, "%s%s", cmd->token[1], ".gpa");
+  } else {
+    fprintf(stdout, "Usage: export or export [FILE_NAME]\n");
+    return;
+  }
+  export(data, fullName);
+  fprintf(stdout, "File exported as %s\n", fullName);
+  free(fullName);
 }
 
 /**
   * Defines behavior for import command.
-  * Imports from the savefile.gpa file.
   *
   * @param data - pointer to the data struct
   */
-void importCommand(Data *data) {
+void importCommand(Data *data, Command *cmd) {
   if (!canImport) {
     fprintf(stdout, "Please clear current course entries with \"remove all\" command.\n\n");
     return;
   }
-  canImport = false;
-  import(data, "savefile.gpa");
+  if (cmd->count != 3) {
+    fprintf(stdout, "Usage: import [FILE_NAME]\n");
+    return;
+  }
+  if (import(data, cmd->token[1])) {
+    canImport = false;
+    fprintf(stdout, "File %s imported successfully\n", cmd->token[1]);
+  }
 }
 
 /**
@@ -156,34 +172,27 @@ bool isValidGrade(char *grade) {
   if (strlen(grade) == 2 && (grade[1] != '+' && grade[1] != '-')) {
     return false;
   }
-  if ((grade[0] >= 'A' && grade[0] <= 'F') || (grade[0] >= 'a' && grade[0] <= 'f')) {
-    if (grade[0] >= 'a' && grade[0] <= 'f') {
-      *(grade) = grade[0] - 32; // capitalize
-    }
+  if (grade[0] >= 'A' && grade[0] <= 'F') {
     if (grade[0] == 'E') {
       return false;
     }
     return true;
-  } else if (grade[0] == 'U' || grade[0] == 'u' || grade[0] == 'S' || grade[0] == 's') {
-		if (grade[0] == 'u' || grade[0] == 's') { // capitalize
-			*(grade) = grade[0] - 32;
-		}
+  } else if (grade[0] == 'U' || grade[0] == 'S') {
 		return true;
 	} else {
 		return false;
 	}
-  return false;
 }
 
 /**
-  * Converts all lowercases in the course title to uppercase.
+  * Converts all lowercases in the string to uppercase.
   *
   * @param name - pointer to the name
   */
-void toUpperCase(char *name) {
-  for (int i = 0; i < strlen(name); i++) {
-    if (name[i] >= 'a' && name[i] <= 'z') {
-      *(name + i) = name[i] - 32;
+void toUpperCase(char *string) {
+  for (int i = 0; i < strlen(string); i++) {
+    if (string[i] >= 'a' && string[i] <= 'z') {
+      *(string + i) = string[i] - 32;
     }
   }
 }
@@ -226,7 +235,9 @@ void addCommand(Data *data, Command *cmd) {
     fprintf(stdout, "Invalid command\n");
     return;
   }
-  toUpperCase(course);
+  
+  toUpperCase(course); // capitalize the course name
+  toUpperCase(letterGrade); // capitalize the letter grade
   if (!isValidGrade(letterGrade)) {
     fprintf(stdout, "Invalid grade\n");
     free(course);
@@ -314,9 +325,9 @@ int main(void) {
     } else if (strcmp(cmd->token[0], "chart") == 0) {
       chartCommand();
     } else if (strcmp(cmd->token[0], "export") == 0) {
-      exportCommand(data);
+      exportCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "import") == 0) {
-      importCommand(data);
+      importCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "about") == 0) {
       aboutCommand();
     } else if (strcmp(cmd->token[0], "quit") == 0 || strcmp(cmd->token[0], "exit") == 0) {

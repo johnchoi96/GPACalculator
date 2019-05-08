@@ -1,15 +1,19 @@
 /**
   * @file file.c
   * @author John Choi
-  * @since 03092019
+  * @since 05082019
   *
   * Handles import and export commands.
   */
 
 #include "data.h"
+#include "calculate.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+
+int creditOnlyHours;
 
 /**
   * Encrypts line by adding 4 to the ascii code of each character.
@@ -33,11 +37,12 @@ void lineDecrypt(char *line) {
   }
 }
 
-void import(Data *data, const char *filename) {
+bool import(Data *data, const char *filename) {
+  creditOnlyHours = 0;
   FILE *fp = fopen(filename, "r");
   if (!fp) {
     fprintf(stdout, "Cannot open file <%s>\n\n", filename);
-    return;
+    return false;
   }
   char *courseName = (char *)malloc(20);
   int creditHour;
@@ -46,12 +51,16 @@ void import(Data *data, const char *filename) {
   while (fscanf(fp, "%[^\n]\n", line) != EOF) {
     lineDecrypt(line);
     sscanf(line, "%s %d %s", courseName, &creditHour, letterGrade);
+    if (strcmp(letterGrade, "S") == 0 || strcmp(letterGrade, "U") == 0) {
+      creditOnlyHours += creditHour;
+    }
     addCourse(data, courseName, creditHour, letterGrade);
   }
   free(line);
   free(courseName);
   free(letterGrade);
   fclose(fp);
+  return true;
 }
 
 void export(Data *data, const char *filename) {

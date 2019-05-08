@@ -1,7 +1,7 @@
 /**
   * @file print.c
   * @author John Choi
-  * @since 03092019
+  * @since 05082019
   *
   * Handles simple printing job.
   */
@@ -16,9 +16,8 @@ void aboutCommand() {
   fprintf(stdout, "Website: johnchoi96.github.io\n");
 
   fprintf(stdout, "Changes in version %s:\n", VERSION);
-  fprintf(stdout, "\tImproved runtime efficiency by replacing linear search\n");
-  fprintf(stdout, "\talgorithm (O(n)) with binary search algorithm (O(log n)).\n");
-  fprintf(stdout, "\tAdded import and export functions to easily restore courses.\n");
+  fprintf(stdout, "\tFile name can be specified for import and export commands.\n");
+  fprintf(stdout, "\tAdded support for S/U grades.\n");
 
   fprintf(stdout, "\n");
 }
@@ -36,7 +35,8 @@ void helpCommand() {
   fprintf(stdout, "\tcalculate\n");
   fprintf(stdout, "\tchart\n");
   fprintf(stdout, "\texport\n"); // added in version 1.2
-  fprintf(stdout, "\timport\n"); // added in version 1.2
+  fprintf(stdout, "\texport [FILE_NAME]");
+  fprintf(stdout, "\timport [FILE_NAME]\n"); // added in version 2.0
   fprintf(stdout, "\tadd [COURSE] [HOURS] [GRADE]\n");
   fprintf(stdout, "\tremove [COURSE]\n");
   fprintf(stdout, "\tremove all\n");
@@ -74,5 +74,8 @@ void chartCommand() {
   fprintf(stdout, "---------------------\n");
 
   fprintf(stdout, "%10s|%10s\n", "F   ", "0.000");
+  fprintf(stdout, "---------------------\n");
+  
+  fprintf(stdout, "S/U grades do not affect the GPA\n");
   fprintf(stdout, "---------------------\n");
 }
