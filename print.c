@@ -10,16 +10,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define VERSION "1.2"
+#define VERSION "2.0"
 
 void aboutCommand() {
   fprintf(stdout, "Website: johnchoi96.github.io\n");
-  
+
   fprintf(stdout, "Changes in version %s:\n", VERSION);
   fprintf(stdout, "\tImproved runtime efficiency by replacing linear search\n");
   fprintf(stdout, "\talgorithm (O(n)) with binary search algorithm (O(log n)).\n");
   fprintf(stdout, "\tAdded import and export functions to easily restore courses.\n");
-  
+
   fprintf(stdout, "\n");
 }
 

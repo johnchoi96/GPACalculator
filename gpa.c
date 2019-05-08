@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 03092019
+  * @since 05082019
   *
   * Driver file for this program.
   */
@@ -18,6 +18,8 @@
 #include <ctype.h>
 
 #define MAX_TOKENS 1024
+
+int creditOnly;
 
 /* Every simple command has one of these associated with it */
 typedef struct {
@@ -95,7 +97,7 @@ void listCommand(Data *data) {
   * @param data - pointer to the data
   */
 void calculateCommand(Data *data) {
-  double gpa = calculateGPA(data);
+  double gpa = calculateGPA(data, creditOnly);
   fprintf(stdout, "The cumulative GPA with %d coursework(s) is:\t%.3f\n\n", data->size, gpa);
 }
 
@@ -142,7 +144,7 @@ Course *findCourse(Data *data, const char *name) {
 /**
   * Returns true if the input grade is valid.
   * Valid grades should have optional '+' or '-' following the letter,
-  * which should be A, B, C, D, or F.
+  * which should be A, B, C, D, F, U, or S.
   *
   * @param grade - pointer to the grade
   * @return true if grade is valid
@@ -156,13 +158,21 @@ bool isValidGrade(char *grade) {
   }
   if ((grade[0] >= 'A' && grade[0] <= 'F') || (grade[0] >= 'a' && grade[0] <= 'f')) {
     if (grade[0] >= 'a' && grade[0] <= 'f') {
-      *(grade) = grade[0] - 32;
+      *(grade) = grade[0] - 32; // capitalize
     }
     if (grade[0] == 'E') {
       return false;
     }
     return true;
-  }
+  } else if (grade[0] == 'U' || grade[0] == 'u' || grade[0] == 'S' || grade[0] == 's') {
+		creditOnly++;
+		if (grade[0] == 'u' || grade[0] == 's') { // capitalize
+			*(grade) = grade[0] - 32;
+		}
+		return true;
+	} else {
+		return false;
+	}
   return false;
 }
 
@@ -225,6 +235,7 @@ void addCommand(Data *data, Command *cmd) {
     return;
   }
 
+	// check for duplicates
   if (data->size != 0) {
     Course *dupCheckCourse = findCourse(data, course);
     if (dupCheckCourse != NULL) {
@@ -235,7 +246,7 @@ void addCommand(Data *data, Command *cmd) {
       return;
     }
   }
-  
+
   addCourse(data, course, creditHours, letterGrade);
 	qsort(data->courseList, data->size, sizeof(Course), compare);
   fprintf(stdout, "%s with %d credit hours - \"%s\" earned.\tAdded\n", course, creditHours, letterGrade);
@@ -275,6 +286,7 @@ void removeCommand(Data *data, Command *cmd) {
   */
 int main(void) {
   canImport = true;
+	creditOnly = 0;
   printHeader();
   char *command = (char *)malloc(1024);
   Data *data = initializeData();
