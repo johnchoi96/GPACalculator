@@ -14,8 +14,8 @@
 #ifndef _CALCULATEH_
 #define _CALCULATEH_
 
-/** Counts the number of credit only classes */
-extern int creditOnly;
+/** Counts the hour of credit only classes */
+extern int creditOnlyHours;
 
 /**
   * Calculates the cumulative GPA based on the courses in the data

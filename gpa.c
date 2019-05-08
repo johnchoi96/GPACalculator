@@ -19,7 +19,7 @@
 
 #define MAX_TOKENS 1024
 
-int creditOnly;
+int creditOnlyHours;
 
 /* Every simple command has one of these associated with it */
 typedef struct {
@@ -97,7 +97,7 @@ void listCommand(Data *data) {
   * @param data - pointer to the data
   */
 void calculateCommand(Data *data) {
-  double gpa = calculateGPA(data, creditOnly);
+  double gpa = calculateGPA(data, creditOnlyHours);
   fprintf(stdout, "The cumulative GPA with %d coursework(s) is:\t%.3f\n\n", data->size, gpa);
 }
 
@@ -165,7 +165,6 @@ bool isValidGrade(char *grade) {
     }
     return true;
   } else if (grade[0] == 'U' || grade[0] == 'u' || grade[0] == 'S' || grade[0] == 's') {
-		creditOnly++;
 		if (grade[0] == 'u' || grade[0] == 's') { // capitalize
 			*(grade) = grade[0] - 32;
 		}
@@ -234,6 +233,10 @@ void addCommand(Data *data, Command *cmd) {
     free(letterGrade);
     return;
   }
+
+	if (strcmp(letterGrade, "S") == 0 || strcmp(letterGrade, "U") == 0) {
+		creditOnlyHours += creditHours;
+	}
 
 	// check for duplicates
   if (data->size != 0) {
