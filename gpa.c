@@ -47,6 +47,7 @@ void fail(const char *msg) {
   */
 void exportCommand(Data *data, Command *cmd) {
   char *fullName = (char *)malloc(MAX_TOKENS);
+  strcpy(fullName, "");
 
 	if (cmd->count != 2) {
 		fprintf(stdout, "Usage: export\n");
@@ -54,12 +55,26 @@ void exportCommand(Data *data, Command *cmd) {
 	}
 	fprintf(stdout, "Please specify the file name. \".gpa\" suffix will be appended.\n");
 	fprintf(stdout, "\nFILE NAME: ");
-	fscanf(stdin, "%[^\n]%*c", fullName);
-	sprintf(fullName, "%s%s", fullName, ".gpa");
+	fscanf(stdin, "%[^\n]", fullName);
+	fscanf(stdin, "%*c");
+	Command *nameInput = parseSequence(fullName);
+	if (nameInput->count != 2) {
+	  if (nameInput->count == 1) {
+	    fprintf(stdout, "File name cannot be blank\n");
+	  } else {
+	    fprintf(stdout, "File name cannot contain a space\n");
+	  }
+	  free(fullName);
+	  free(nameInput);
+	  return;
+	}
+  
+	sprintf(fullName, "%s%s", nameInput->token[0], ".gpa");
 	fprintf(stdout, "\n");
   export(data, fullName);
   fprintf(stdout, "File exported as %s\n", fullName);
   free(fullName);
+  free(nameInput);
 }
 
 /**
@@ -77,14 +92,30 @@ void importCommand(Data *data, Command *cmd) {
     return;
   }
 	char *fullName = (char *)malloc(MAX_TOKENS);
+	strcpy(fullName, "");
 	fprintf(stdout, "Please specify the file name. \".gpa\" suffix will be appended.\n");
 	fprintf(stdout, "\nFILE NAME: ");
-	fscanf(stdin, "%[^\n]%*c", fullName);
-	sprintf(fullName, "%s%s", fullName, ".gpa");
+	fscanf(stdin, "%[^\n]", fullName);
+	fscanf(stdin, "%*c");
+	Command *nameInput = parseSequence(fullName);
+	if (nameInput->count != 2) {
+	  if (nameInput->count == 1) {
+	    fprintf(stdout, "File name cannot be blank\n");
+	  } else {
+	    fprintf(stdout, "File name cannot contain a space\n");
+	  }
+	  free(fullName);
+	  free(nameInput);
+	  return;
+	}
+  
+	sprintf(fullName, "%s%s", nameInput->token[0], ".gpa");
+	fprintf(stdout, "\n");
   if (import(data, fullName)) {
     canImport = false;
     fprintf(stdout, "File %s imported successfully\n", fullName);
   }
+  free(nameInput);
 	free(fullName);
 }
 
