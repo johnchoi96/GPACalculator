@@ -35,8 +35,7 @@ void helpCommand() {
   fprintf(stdout, "\tcalculate\n");
   fprintf(stdout, "\tchart\n");
   fprintf(stdout, "\texport\n"); // added in version 1.2
-  fprintf(stdout, "\texport [FILE_NAME]");
-  fprintf(stdout, "\timport [FILE_NAME]\n"); // added in version 2.0
+  fprintf(stdout, "\timport\n"); // added in version 2.0
   fprintf(stdout, "\tadd [COURSE] [HOURS] [GRADE]\n");
   fprintf(stdout, "\tremove [COURSE]\n");
   fprintf(stdout, "\tremove all\n");
@@ -75,7 +74,7 @@ void chartCommand() {
 
   fprintf(stdout, "%10s|%10s\n", "F   ", "0.000");
   fprintf(stdout, "---------------------\n");
-  
+
   fprintf(stdout, "S/U grades do not affect the GPA\n");
   fprintf(stdout, "---------------------\n");
 }

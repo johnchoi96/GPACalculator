@@ -47,14 +47,16 @@ void fail(const char *msg) {
   */
 void exportCommand(Data *data, Command *cmd) {
   char *fullName = (char *)malloc(MAX_TOKENS);
-  if (cmd->count == 2) {
-    sprintf(fullName, "%s", "savefile.gpa");
-  } else if (cmd->count == 3) {
-    sprintf(fullName, "%s%s", cmd->token[1], ".gpa");
-  } else {
-    fprintf(stdout, "Usage: export or export [FILE_NAME]\n");
-    return;
-  }
+
+	if (cmd->count != 2) {
+		fprintf(stdout, "Usage: export\n");
+		return;
+	}
+	fprintf(stdout, "Please specify the file name. \".gpa\" suffix will be appended.\n");
+	fprintf(stdout, "\nFILE NAME: ");
+	fscanf(stdin, "%[^\n]%*c", fullName);
+	sprintf(fullName, "%s%s", fullName, ".gpa");
+	fprintf(stdout, "\n");
   export(data, fullName);
   fprintf(stdout, "File exported as %s\n", fullName);
   free(fullName);
@@ -70,14 +72,20 @@ void importCommand(Data *data, Command *cmd) {
     fprintf(stdout, "Please clear current course entries with \"remove all\" command.\n\n");
     return;
   }
-  if (cmd->count != 3) {
-    fprintf(stdout, "Usage: import [FILE_NAME]\n");
+  if (cmd->count != 2) {
+    fprintf(stdout, "Usage: import\n");
     return;
   }
-  if (import(data, cmd->token[1])) {
+	char *fullName = (char *)malloc(MAX_TOKENS);
+	fprintf(stdout, "Please specify the file name. \".gpa\" suffix will be appended.\n");
+	fprintf(stdout, "\nFILE NAME: ");
+	fscanf(stdin, "%[^\n]%*c", fullName);
+	sprintf(fullName, "%s%s", fullName, ".gpa");
+  if (import(data, fullName)) {
     canImport = false;
-    fprintf(stdout, "File %s imported successfully\n", cmd->token[1]);
+    fprintf(stdout, "File %s imported successfully\n", fullName);
   }
+	free(fullName);
 }
 
 /**
@@ -235,7 +243,7 @@ void addCommand(Data *data, Command *cmd) {
     fprintf(stdout, "Invalid command\n");
     return;
   }
-  
+
   toUpperCase(course); // capitalize the course name
   toUpperCase(letterGrade); // capitalize the letter grade
   if (!isValidGrade(letterGrade)) {
