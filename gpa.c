@@ -352,7 +352,7 @@ void changeCommand(Data *data, Command *cmd) {
 		return;
 	}
 	if (strcmp(cmd->token[1], "grade") == 0) {
-		if (strlen(cmd->token[3]) != 1) {
+		if (strlen(cmd->token[3]) > 2) {
 			fprintf(stdout, "Invalid grade\n");
 			return;
 		}
