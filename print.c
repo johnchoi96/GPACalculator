@@ -1,7 +1,7 @@
 /**
   * @file print.c
   * @author John Choi
-  * @since 03092019
+  * @since 08112019
   *
   * Handles simple printing job.
   */
@@ -10,16 +10,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define VERSION "1.2"
+#define VERSION "2.0"
 
 void aboutCommand() {
   fprintf(stdout, "Website: johnchoi96.github.io\n");
-  
+
   fprintf(stdout, "Changes in version %s:\n", VERSION);
-  fprintf(stdout, "\tImproved runtime efficiency by replacing linear search\n");
-  fprintf(stdout, "\talgorithm (O(n)) with binary search algorithm (O(log n)).\n");
-  fprintf(stdout, "\tAdded import and export functions to easily restore courses.\n");
-  
+  fprintf(stdout, "\tFile name can be specified for import and export commands.\n");
+  fprintf(stdout, "\tAdded support for S/U grades.\n");
+  fprintf(stdout, "\tAdded change grade and change hour commands.\n");
+
   fprintf(stdout, "\n");
 }
 
@@ -32,14 +32,16 @@ void printHeader() {
 
 void helpCommand() {
   fprintf(stdout, "\nUsage:\n");
-  fprintf(stdout, "\tlist\n");
-  fprintf(stdout, "\tcalculate\n");
-  fprintf(stdout, "\tchart\n");
-  fprintf(stdout, "\texport\n"); // added in version 1.2
-  fprintf(stdout, "\timport\n"); // added in version 1.2
   fprintf(stdout, "\tadd [COURSE] [HOURS] [GRADE]\n");
   fprintf(stdout, "\tremove [COURSE]\n");
   fprintf(stdout, "\tremove all\n");
+  fprintf(stdout, "\tchange grade [COURSE] [NEW GRADE]\n"); // added in 2.0
+  fprintf(stdout, "\tchange hour [COURSE] [NEW HOUR]\n"); // added in 2.0
+  fprintf(stdout, "\tlist\n");
+  fprintf(stdout, "\tcalculate\n");
+  fprintf(stdout, "\tchart\n");
+  fprintf(stdout, "\timport\n"); // added in version 2.0
+  fprintf(stdout, "\texport\n"); // added in version 1.2
   fprintf(stdout, "\tabout\n");
   fprintf(stdout, "\tquit or exit\n");
 }
@@ -49,30 +51,37 @@ void chartCommand() {
   fprintf(stdout, "%10s|%10s\n", "Grade  ", "Value");
   fprintf(stdout, "---------------------\n");
   fprintf(stdout, "---------------------\n");
-  fprintf(stdout, "%10s|%10s\n", "A+  ", "4.333");
-  fprintf(stdout, "%10s|%10s\n", "A   ", "4.000");
-  fprintf(stdout, "%10s|%10s\n", "A-  ", "3.667");
+  fprintf(stdout, "%10s|%10s\n", "A+  ", "4.3");
+  fprintf(stdout, "%10s|%10s\n", "A   ", "4.0");
+  fprintf(stdout, "%10s|%10s\n", "A-  ", "3.7");
 
   fprintf(stdout, "---------------------\n");
 
-  fprintf(stdout, "%10s|%10s\n", "B+  ", "3.333");
-  fprintf(stdout, "%10s|%10s\n", "B   ", "3.000");
-  fprintf(stdout, "%10s|%10s\n", "B-  ", "2.667");
+  fprintf(stdout, "%10s|%10s\n", "B+  ", "3.3");
+  fprintf(stdout, "%10s|%10s\n", "B   ", "3.0");
+  fprintf(stdout, "%10s|%10s\n", "B-  ", "2.6");
 
   fprintf(stdout, "---------------------\n");
 
-  fprintf(stdout, "%10s|%10s\n", "C+  ", "2.333");
-  fprintf(stdout, "%10s|%10s\n", "C   ", "2.000");
-  fprintf(stdout, "%10s|%10s\n", "C-  ", "1.667");
+  fprintf(stdout, "%10s|%10s\n", "C+  ", "2.3");
+  fprintf(stdout, "%10s|%10s\n", "C   ", "2.0");
+  fprintf(stdout, "%10s|%10s\n", "C-  ", "1.7");
 
   fprintf(stdout, "---------------------\n");
 
-  fprintf(stdout, "%10s|%10s\n", "D+  ", "1.333");
-  fprintf(stdout, "%10s|%10s\n", "D   ", "1.000");
-  fprintf(stdout, "%10s|%10s\n", "D-  ", "0.667");
+  fprintf(stdout, "%10s|%10s\n", "D+  ", "1.3");
+  fprintf(stdout, "%10s|%10s\n", "D   ", "1.0");
+  fprintf(stdout, "%10s|%10s\n", "D-  ", "0.7");
 
   fprintf(stdout, "---------------------\n");
 
-  fprintf(stdout, "%10s|%10s\n", "F   ", "0.000");
+  fprintf(stdout, "%10s|%10s\n", "F   ", "0.0");
+  fprintf(stdout, "---------------------\n");
+
+  fprintf(stdout, "S/U grades do not affect the GPA\n");
+  fprintf(stdout, "---------------------\n");
+  fprintf(stdout, "---------------------\n");
+
+  fprintf(stdout, "GPA scale based on The Ohio State University\n");
   fprintf(stdout, "---------------------\n");
 }

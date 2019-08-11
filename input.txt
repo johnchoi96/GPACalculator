@@ -1,8 +1,0 @@
-add csc316 3 a
-add csc216 4 b
-add csc116 3 a
-add st370 4 b
-list
-remove csc116
-list
-quit

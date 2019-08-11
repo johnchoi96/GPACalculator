@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 03092019
+  * @since 08112019
   *
   * Driver file for this program.
   */
@@ -18,6 +18,8 @@
 #include <ctype.h>
 
 #define MAX_TOKENS 1024
+
+int creditOnlyHours;
 
 /* Every simple command has one of these associated with it */
 typedef struct {
@@ -39,27 +41,82 @@ void fail(const char *msg) {
 
 /**
   * Defines behavior for export command.
-  * Exports to the savefile.gpa file.
+  * Exports to the savefile.gpa file if name is not specified.
   *
   * @param data - pointer to the data struct
   */
-void exportCommand(Data *data) {
-  export(data, "savefile.gpa");
+void exportCommand(Data *data, Command *cmd) {
+  char *fullName = (char *)malloc(MAX_TOKENS);
+  strcpy(fullName, "");
+
+	if (cmd->count != 2) {
+		fprintf(stdout, "Usage: export\n");
+		return;
+	}
+	fprintf(stdout, "Please specify the file name. \".gpa\" suffix will be appended.\n");
+	fprintf(stdout, "\nFILE NAME: ");
+	fscanf(stdin, "%[^\n]", fullName);
+	fscanf(stdin, "%*c");
+	Command *nameInput = parseSequence(fullName);
+	if (nameInput->count != 2) {
+	  if (nameInput->count == 1) {
+	    fprintf(stdout, "File name cannot be blank\n");
+	  } else {
+	    fprintf(stdout, "File name cannot contain a space\n");
+	  }
+	  free(fullName);
+	  free(nameInput);
+	  return;
+	}
+
+	sprintf(fullName, "%s%s", nameInput->token[0], ".gpa");
+	fprintf(stdout, "\n");
+  export(data, fullName);
+  fprintf(stdout, "File exported as %s\n", fullName);
+  free(fullName);
+  free(nameInput);
 }
 
 /**
   * Defines behavior for import command.
-  * Imports from the savefile.gpa file.
   *
   * @param data - pointer to the data struct
   */
-void importCommand(Data *data) {
+void importCommand(Data *data, Command *cmd) {
   if (!canImport) {
     fprintf(stdout, "Please clear current course entries with \"remove all\" command.\n\n");
     return;
   }
-  canImport = false;
-  import(data, "savefile.gpa");
+  if (cmd->count != 2) {
+    fprintf(stdout, "Usage: import\n");
+    return;
+  }
+	char *fullName = (char *)malloc(MAX_TOKENS);
+	strcpy(fullName, "");
+	fprintf(stdout, "Please specify the file name. \".gpa\" suffix will be appended.\n");
+	fprintf(stdout, "\nFILE NAME: ");
+	fscanf(stdin, "%[^\n]", fullName);
+	fscanf(stdin, "%*c");
+	Command *nameInput = parseSequence(fullName);
+	if (nameInput->count != 2) {
+	  if (nameInput->count == 1) {
+	    fprintf(stdout, "File name cannot be blank\n");
+	  } else {
+	    fprintf(stdout, "File name cannot contain a space\n");
+	  }
+	  free(fullName);
+	  free(nameInput);
+	  return;
+	}
+
+	sprintf(fullName, "%s%s", nameInput->token[0], ".gpa");
+	fprintf(stdout, "\n");
+  if (import(data, fullName)) {
+    canImport = false;
+    fprintf(stdout, "File %s imported successfully\n", fullName);
+  }
+  free(nameInput);
+	free(fullName);
 }
 
 /**
@@ -95,7 +152,7 @@ void listCommand(Data *data) {
   * @param data - pointer to the data
   */
 void calculateCommand(Data *data) {
-  double gpa = calculateGPA(data);
+  double gpa = calculateGPA(data, creditOnlyHours);
   fprintf(stdout, "The cumulative GPA with %d coursework(s) is:\t%.3f\n\n", data->size, gpa);
 }
 
@@ -142,7 +199,7 @@ Course *findCourse(Data *data, const char *name) {
 /**
   * Returns true if the input grade is valid.
   * Valid grades should have optional '+' or '-' following the letter,
-  * which should be A, B, C, D, or F.
+  * which should be A, B, C, D, F, U, or S.
   *
   * @param grade - pointer to the grade
   * @return true if grade is valid
@@ -154,27 +211,27 @@ bool isValidGrade(char *grade) {
   if (strlen(grade) == 2 && (grade[1] != '+' && grade[1] != '-')) {
     return false;
   }
-  if ((grade[0] >= 'A' && grade[0] <= 'F') || (grade[0] >= 'a' && grade[0] <= 'f')) {
-    if (grade[0] >= 'a' && grade[0] <= 'f') {
-      *(grade) = grade[0] - 32;
-    }
+  if (grade[0] >= 'A' && grade[0] <= 'F') {
     if (grade[0] == 'E') {
       return false;
     }
     return true;
-  }
-  return false;
+  } else if (grade[0] == 'U' || grade[0] == 'S') {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /**
-  * Converts all lowercases in the course title to uppercase.
+  * Converts all lowercases in the string to uppercase.
   *
   * @param name - pointer to the name
   */
-void toUpperCase(char *name) {
-  for (int i = 0; i < strlen(name); i++) {
-    if (name[i] >= 'a' && name[i] <= 'z') {
-      *(name + i) = name[i] - 32;
+void toUpperCase(char *string) {
+  for (int i = 0; i < strlen(string); i++) {
+    if (string[i] >= 'a' && string[i] <= 'z') {
+      *(string + i) = string[i] - 32;
     }
   }
 }
@@ -217,7 +274,9 @@ void addCommand(Data *data, Command *cmd) {
     fprintf(stdout, "Invalid command\n");
     return;
   }
-  toUpperCase(course);
+
+  toUpperCase(course); // capitalize the course name
+  toUpperCase(letterGrade); // capitalize the letter grade
   if (!isValidGrade(letterGrade)) {
     fprintf(stdout, "Invalid grade\n");
     free(course);
@@ -225,6 +284,11 @@ void addCommand(Data *data, Command *cmd) {
     return;
   }
 
+	if (strcmp(letterGrade, "S") == 0 || strcmp(letterGrade, "U") == 0) {
+		creditOnlyHours += creditHours;
+	}
+
+	// check for duplicates
   if (data->size != 0) {
     Course *dupCheckCourse = findCourse(data, course);
     if (dupCheckCourse != NULL) {
@@ -235,7 +299,7 @@ void addCommand(Data *data, Command *cmd) {
       return;
     }
   }
-  
+
   addCourse(data, course, creditHours, letterGrade);
 	qsort(data->courseList, data->size, sizeof(Course), compare);
   fprintf(stdout, "%s with %d credit hours - \"%s\" earned.\tAdded\n", course, creditHours, letterGrade);
@@ -269,12 +333,63 @@ void removeCommand(Data *data, Command *cmd) {
 }
 
 /**
+	* Two different subroutines. change grade or change hour.
+	* Usage: change grade CSE2221 a
+	* or change hour CSE2221 4
+	*
+	* @param data - pointer to the data
+	* @param cmd - command input from the user
+	*/
+void changeCommand(Data *data, Command *cmd) {
+	if (cmd->count != 5) {
+		fprintf(stdout, "Invalid command\n");
+		return;
+	}
+	toUpperCase(cmd->token[2]);
+	Course *course = findCourse(data, cmd->token[2]);
+	if (course == NULL) {
+		fprintf(stdout, "Course %s not found\n", cmd->token[2]);
+		return;
+	}
+	if (strcmp(cmd->token[1], "grade") == 0) {
+		if (strlen(cmd->token[3]) > 2) {
+			fprintf(stdout, "Invalid grade\n");
+			return;
+		}
+		toUpperCase(cmd->token[3]);
+		if (isValidGrade(cmd->token[3])) {
+			free(course->letterGrade);
+			course->letterGrade = strdup(cmd->token[3]);
+		} else {
+			fprintf(stdout, "Invalid grade\n");
+		}
+	} else if (strcmp(cmd->token[1], "hour") == 0) {
+		int newHour = atoi(cmd->token[3]);
+		int oldHour = course->hours;
+		if (newHour == oldHour) {
+			fprintf(stdout, "New hour is equal to the old hour (%d)\n", course->hours);
+			return;
+		}
+		course->hours = newHour;
+		int difference = abs(newHour - oldHour);
+		if (newHour > oldHour) {
+			data->totalCredits += difference;
+		} else {
+			data->totalCredits -= difference;
+		}
+	} else {
+		fprintf(stdout, "Invalid command\n");
+	}
+}
+
+/**
   * Driver function for this program.
   *
   * @return EXIT_SUCCESS if the program terminates correctly
   */
 int main(void) {
   canImport = true;
+	creditOnlyHours = 0;
   printHeader();
   char *command = (char *)malloc(1024);
   Data *data = initializeData();
@@ -294,17 +409,19 @@ int main(void) {
       removeCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "help") == 0) {
       helpCommand();
-    } else if (strcmp(cmd->token[0], "list") == 0) {
+    } else if (strcmp(cmd->token[0], "list") == 0 || strcmp(cmd->token[0], "ls") == 0) {
       listCommand(data);
     } else if (strcmp(cmd->token[0], "chart") == 0) {
       chartCommand();
     } else if (strcmp(cmd->token[0], "export") == 0) {
-      exportCommand(data);
+      exportCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "import") == 0) {
-      importCommand(data);
+      importCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "about") == 0) {
       aboutCommand();
-    } else if (strcmp(cmd->token[0], "quit") == 0 || strcmp(cmd->token[0], "exit") == 0) {
+    } else if (strcmp(cmd->token[0], "change") == 0) {
+			changeCommand(data, cmd);
+		} else if (strcmp(cmd->token[0], "quit") == 0 || strcmp(cmd->token[0], "exit") == 0) {
       free(cmd);
       break;
     } else {

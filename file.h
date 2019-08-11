@@ -1,12 +1,13 @@
 /**
   * @file file.h
   * @author John Choi
-  * @since 03092019
+  * @since 05082019
   *
   * Defines prototypes for functions defined in file.c
   */
 
 #include "data.h"
+#include <stdbool.h>
 
 #ifndef _FILEH_
 #define _FILEH_
@@ -16,8 +17,9 @@
   *
   * @param data - pointer to the data struct
   * @param filename - file to import from
+  * @return true if import was successful
   */
-void import(Data *data, const char *filename);
+bool import(Data *data, const char *filename);
 
 /**
   * Exports the course listing to the output file.

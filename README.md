@@ -1,7 +1,7 @@
 # GPACalculator
 
-Terminal based GPA Calculator application. 
-GPA points based on NC State University's.
+Terminal based GPA Calculator application.
+GPA points based on The Ohio State University, Columbus, OH.
 
  OS | Instruction
 --- | ---
