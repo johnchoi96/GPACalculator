@@ -358,7 +358,8 @@ void changeCommand(Data *data, Command *cmd) {
 		}
 		toUpperCase(cmd->token[3]);
 		if (isValidGrade(cmd->token[3])) {
-			strcpy(course->letterGrade, cmd->token[3]);
+			free(course->letterGrade);
+			course->letterGrade = strdup(cmd->token[3]);
 		} else {
 			fprintf(stdout, "Invalid grade\n");
 		}
