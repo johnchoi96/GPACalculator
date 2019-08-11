@@ -11,3 +11,5 @@ file.o: file.c file.h data.h
 clean:
 	rm -rf *.o
 	rm -rf *.gch
+	rm -rf *.exe
+	rm -rf gpa
