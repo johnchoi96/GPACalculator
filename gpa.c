@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 05082019
+  * @since 08112019
   *
   * Driver file for this program.
   */
@@ -302,6 +302,55 @@ void removeCommand(Data *data, Command *cmd) {
 }
 
 /**
+	* Two different subroutines. change grade or change hour.
+	* Usage: change grade CSE2221 a
+	* or change hour CSE2221 4
+	*
+	* @param data - pointer to the data
+	* @param cmd - command input from the user
+	*/
+void changeCommand(Data *data, Command *cmd) {
+	if (cmd->count != 5) {
+		fprintf(stdout, "Invalid command\n");
+		return;
+	}
+	toUpperCase(cmd->token[2]);
+	Course *course = findCourse(data, cmd->token[2]);
+	if (course == NULL) {
+		fprintf(stdout, "Course %s not found\n", cmd->token[2]);
+		return;
+	}
+	if (strcmp(cmd->token[1], "grade") == 0) {
+		if (strlen(cmd->token[3]) != 1) {
+			fprintf(stdout, "Invalid grade\n");
+			return;
+		}
+		toUpperCase(cmd->token[3]);
+		if (isValidGrade(cmd->token[3])) {
+			strcpy(course->letterGrade, cmd->token[3]);
+		} else {
+			fprintf(stdout, "Invalid grade\n");
+		}
+	} else if (strcmp(cmd->token[1], "hour") == 0) {
+		int newHour = atoi(cmd->token[3]);
+		int oldHour = course->hours;
+		if (newHour == oldHour) {
+			fprintf(stdout, "New hour is equal to the old hour (%d)\n", course->hours);
+			return;
+		}
+		course->hours = newHour;
+		int difference = abs(newHour - oldHour);
+		if (newHour > oldHour) {
+			data->totalCredits += difference;
+		} else {
+			data->totalCredits -= difference;
+		}
+	} else {
+		fprintf(stdout, "Invalid command\n");
+	}
+}
+
+/**
   * Driver function for this program.
   *
   * @return EXIT_SUCCESS if the program terminates correctly
@@ -338,7 +387,9 @@ int main(void) {
       importCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "about") == 0) {
       aboutCommand();
-    } else if (strcmp(cmd->token[0], "quit") == 0 || strcmp(cmd->token[0], "exit") == 0) {
+    } else if (strcmp(cmd->token[0], "change") == 0) {
+			changeCommand(data, cmd);
+		} else if (strcmp(cmd->token[0], "quit") == 0 || strcmp(cmd->token[0], "exit") == 0) {
       free(cmd);
       break;
     } else {

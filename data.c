@@ -1,7 +1,7 @@
 /**
   * @file data.c
   * @author John Choi
-  * @since 02282019
+  * @since 08112019
   *
   * Initializes data and adds and removes courses, and frees data.
   */
@@ -27,7 +27,7 @@ Data *initializeData() {
 void addCourse(Data *data, const char *course, int hours, const char *grade) {
   canImport = false;
   data->totalCredits += hours;
-  
+
   //first, make a new course
   Course newCourse;
   newCourse.name = strdup(course);

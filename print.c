@@ -1,7 +1,7 @@
 /**
   * @file print.c
   * @author John Choi
-  * @since 05082019
+  * @since 08112019
   *
   * Handles simple printing job.
   */
@@ -31,14 +31,16 @@ void printHeader() {
 
 void helpCommand() {
   fprintf(stdout, "\nUsage:\n");
-  fprintf(stdout, "\tlist\n");
-  fprintf(stdout, "\tcalculate\n");
-  fprintf(stdout, "\tchart\n");
-  fprintf(stdout, "\texport\n"); // added in version 1.2
-  fprintf(stdout, "\timport\n"); // added in version 2.0
   fprintf(stdout, "\tadd [COURSE] [HOURS] [GRADE]\n");
   fprintf(stdout, "\tremove [COURSE]\n");
   fprintf(stdout, "\tremove all\n");
+  fprintf(stdout, "\tchange grade [COURSE] [NEW GRADE]\n"); // added in 2.0
+  fprintf(stdout, "\tchange hour [COURSE] [NEW HOUR]\n"); // added in 2.0
+  fprintf(stdout, "\tlist\n");
+  fprintf(stdout, "\tcalculate\n");
+  fprintf(stdout, "\tchart\n");
+  fprintf(stdout, "\timport\n"); // added in version 2.0
+  fprintf(stdout, "\texport\n"); // added in version 1.2
   fprintf(stdout, "\tabout\n");
   fprintf(stdout, "\tquit or exit\n");
 }
