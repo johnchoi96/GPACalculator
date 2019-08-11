@@ -408,7 +408,7 @@ int main(void) {
       removeCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "help") == 0) {
       helpCommand();
-    } else if (strcmp(cmd->token[0], "list") == 0 || strcmp(cmd->token[0], "ls")) {
+    } else if (strcmp(cmd->token[0], "list") == 0 || strcmp(cmd->token[0], "ls") == 0) {
       listCommand(data);
     } else if (strcmp(cmd->token[0], "chart") == 0) {
       chartCommand();

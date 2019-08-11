@@ -1,9 +1,13 @@
 /**
   * @file calculate.c
   * @author John Choi
-  * @since 05082019
+  * @since 08112019
   *
   * Calculates overall GPA based on the courses added to the data.
+  * GPA scale based on NC State University, Raleigh, NC.
+  *
+  * Changes August 11, 2019:
+  *   GPA scale now based on The Ohio State University, Columbus, OH.
   */
 
 #include "data.h"
@@ -20,29 +24,29 @@
   */
 double convertToNumeric(const char *grade) {
   if (strcmp(grade, "A+") == 0) {
-    return 4.333;
+    return 4.3;
   } else if (strcmp(grade, "A") == 0) {
     return 4.0;
   } else if (strcmp(grade, "A-") == 0) {
-    return 3.667;
+    return 3.7;
   } else if (strcmp(grade, "B+") == 0) {
-    return 3.333;
+    return 3.3;
   } else if (strcmp(grade, "B") == 0) {
     return 3.0;
   } else if (strcmp(grade, "B-") == 0) {
-    return 2.667;
+    return 2.7;
   } else if (strcmp(grade, "C+") == 0) {
-    return 2.333;
+    return 2.3;
   } else if (strcmp(grade, "C") == 0) {
     return 2.0;
   } else if (strcmp(grade, "C-") == 0) {
-    return 1.667;
+    return 1.7;
   } else if (strcmp(grade, "D+") == 0) {
-    return 1.333;
+    return 1.3;
   } else if (strcmp(grade, "D") == 0) {
     return 1.0;
   } else if (strcmp(grade, "D-") == 0) {
-    return 0.667;
+    return 0.7;
   } else {
     return 0;
   }

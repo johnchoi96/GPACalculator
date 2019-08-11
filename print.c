@@ -50,33 +50,37 @@ void chartCommand() {
   fprintf(stdout, "%10s|%10s\n", "Grade  ", "Value");
   fprintf(stdout, "---------------------\n");
   fprintf(stdout, "---------------------\n");
-  fprintf(stdout, "%10s|%10s\n", "A+  ", "4.333");
-  fprintf(stdout, "%10s|%10s\n", "A   ", "4.000");
-  fprintf(stdout, "%10s|%10s\n", "A-  ", "3.667");
+  fprintf(stdout, "%10s|%10s\n", "A+  ", "4.3");
+  fprintf(stdout, "%10s|%10s\n", "A   ", "4.0");
+  fprintf(stdout, "%10s|%10s\n", "A-  ", "3.7");
 
   fprintf(stdout, "---------------------\n");
 
-  fprintf(stdout, "%10s|%10s\n", "B+  ", "3.333");
-  fprintf(stdout, "%10s|%10s\n", "B   ", "3.000");
-  fprintf(stdout, "%10s|%10s\n", "B-  ", "2.667");
+  fprintf(stdout, "%10s|%10s\n", "B+  ", "3.3");
+  fprintf(stdout, "%10s|%10s\n", "B   ", "3.0");
+  fprintf(stdout, "%10s|%10s\n", "B-  ", "2.6");
 
   fprintf(stdout, "---------------------\n");
 
-  fprintf(stdout, "%10s|%10s\n", "C+  ", "2.333");
-  fprintf(stdout, "%10s|%10s\n", "C   ", "2.000");
-  fprintf(stdout, "%10s|%10s\n", "C-  ", "1.667");
+  fprintf(stdout, "%10s|%10s\n", "C+  ", "2.3");
+  fprintf(stdout, "%10s|%10s\n", "C   ", "2.0");
+  fprintf(stdout, "%10s|%10s\n", "C-  ", "1.7");
 
   fprintf(stdout, "---------------------\n");
 
-  fprintf(stdout, "%10s|%10s\n", "D+  ", "1.333");
-  fprintf(stdout, "%10s|%10s\n", "D   ", "1.000");
-  fprintf(stdout, "%10s|%10s\n", "D-  ", "0.667");
+  fprintf(stdout, "%10s|%10s\n", "D+  ", "1.3");
+  fprintf(stdout, "%10s|%10s\n", "D   ", "1.0");
+  fprintf(stdout, "%10s|%10s\n", "D-  ", "0.7");
 
   fprintf(stdout, "---------------------\n");
 
-  fprintf(stdout, "%10s|%10s\n", "F   ", "0.000");
+  fprintf(stdout, "%10s|%10s\n", "F   ", "0.0");
   fprintf(stdout, "---------------------\n");
 
   fprintf(stdout, "S/U grades do not affect the GPA\n");
+  fprintf(stdout, "---------------------\n");
+  fprintf(stdout, "---------------------\n");
+
+  fprintf(stdout, "GPA scale based on The Ohio State University\n");
   fprintf(stdout, "---------------------\n");
 }
