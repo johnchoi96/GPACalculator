@@ -68,7 +68,7 @@ void exportCommand(Data *data, Command *cmd) {
 	  free(nameInput);
 	  return;
 	}
-  
+
 	sprintf(fullName, "%s%s", nameInput->token[0], ".gpa");
 	fprintf(stdout, "\n");
   export(data, fullName);
@@ -108,7 +108,7 @@ void importCommand(Data *data, Command *cmd) {
 	  free(nameInput);
 	  return;
 	}
-  
+
 	sprintf(fullName, "%s%s", nameInput->token[0], ".gpa");
 	fprintf(stdout, "\n");
   if (import(data, fullName)) {
@@ -408,7 +408,7 @@ int main(void) {
       removeCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "help") == 0) {
       helpCommand();
-    } else if (strcmp(cmd->token[0], "list") == 0) {
+    } else if (strcmp(cmd->token[0], "list") == 0 || strcmp(cmd->token[0], "ls")) {
       listCommand(data);
     } else if (strcmp(cmd->token[0], "chart") == 0) {
       chartCommand();
