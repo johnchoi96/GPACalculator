@@ -18,6 +18,7 @@ void aboutCommand() {
   fprintf(stdout, "Changes in version %s:\n", VERSION);
   fprintf(stdout, "\tFile name can be specified for import and export commands.\n");
   fprintf(stdout, "\tAdded support for S/U grades.\n");
+  fprintf(stdout, "\tAdded change grade and change hour commands.\n");
 
   fprintf(stdout, "\n");
 }
