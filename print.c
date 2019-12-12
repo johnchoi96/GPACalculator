@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define VERSION "2.0"
+#define VERSION "3.0"
 
 void aboutCommand() {
   fprintf(stdout, "Website: johnchoi96.github.io\n");
@@ -37,8 +37,7 @@ void helpCommand() {
   fprintf(stdout, "\tremove all\n");
   fprintf(stdout, "\tchange grade [COURSE] [NEW GRADE]\n"); // added in 2.0
   fprintf(stdout, "\tchange hour [COURSE] [NEW HOUR]\n"); // added in 2.0
-  fprintf(stdout, "\tlist\n");
-  fprintf(stdout, "\tcalculate\n");
+  fprintf(stdout, "\tlist or calculate\n");
   fprintf(stdout, "\tchart\n");
   fprintf(stdout, "\timport\n"); // added in version 2.0
   fprintf(stdout, "\texport\n"); // added in version 1.2

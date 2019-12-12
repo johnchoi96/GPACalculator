@@ -32,7 +32,7 @@ Command *parseSequence();
 /**
   * Prints out failure message and terminates program.
   *
-  * @param msg - failure message
+  * @param msg failure message
   */
 void fail(const char *msg) {
   fprintf(stderr, "%s\n", msg);
@@ -43,7 +43,7 @@ void fail(const char *msg) {
   * Defines behavior for export command.
   * Exports to the savefile.gpa file if name is not specified.
   *
-  * @param data - pointer to the data struct
+  * @param data pointer to the data struct
   */
 void exportCommand(Data *data, Command *cmd) {
   char *fullName = (char *)malloc(MAX_TOKENS);
@@ -80,7 +80,7 @@ void exportCommand(Data *data, Command *cmd) {
 /**
   * Defines behavior for import command.
   *
-  * @param data - pointer to the data struct
+  * @param data pointer to the data struct
   */
 void importCommand(Data *data, Command *cmd) {
   if (!canImport) {
@@ -134,22 +134,10 @@ int compare(const void *a, const void *b) {
 }
 
 /**
-  * Sorts and prints out the list of added courses.
-  *
-  * @param data - pointer to the data
-  */
-void listCommand(Data *data) {
-	for (int i = 0; i < data->size; i++) {
-		fprintf(stdout, "%7s%3d Hours %7s earned\n", data->courseList[i].name, data->courseList[i].hours, data->courseList[i].letterGrade);
-	}
-  fprintf(stdout, "Total of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
-}
-
-/**
   * Defines behavior for the calculate command.
   * Calculates the cumulative GPA.
   *
-  * @param data - pointer to the data
+  * @param data pointer to the data
   */
 void calculateCommand(Data *data) {
   double gpa = calculateGPA(data, creditOnlyHours);
@@ -157,13 +145,27 @@ void calculateCommand(Data *data) {
 }
 
 /**
+  * Sorts and prints out the list of added courses.
+  *
+  * @param data - pointer to the data
+  */
+void listCommand(Data *data) {
+  for (int i = 0; i < data->size; i++) {
+    fprintf(stdout, "%7s%3d Hours %7s earned\n", data->courseList[i].name, data->courseList[i].hours, data->courseList[i].letterGrade);
+  }
+  fprintf(stdout, "Total of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
+
+  calculateCommand(data);
+}
+
+/**
   * Uses binary search method to find the course in the list.
   * Produces O(log n) runtime at worst case.
   *
-  * @param courseList - sorted list of courses
+  * @param courseList sorted list of courses
   * @param lowIndex bottom index
   * @param highIndex top index
-  * @param name - target name of the course to find
+  * @param name target name of the course to find
   * @return pointer to the found course, NULL if not found
   */
 Course *binarySearchCourse(Course *courseList, int lowIndex, int highIndex, const char *name) {
@@ -188,8 +190,8 @@ Course *binarySearchCourse(Course *courseList, int lowIndex, int highIndex, cons
   * Finds and returns the pointer to the course with the given name.
   * O(log n) binary search method.
   *
-  * @param data - pointer to the data
-  * @param name - name of the course to find
+  * @param data pointer to the data
+  * @param name name of the course to find
   * @return pointer to the course with the given name or NULL if does not exist
   */
 Course *findCourse(Data *data, const char *name) {
@@ -201,7 +203,7 @@ Course *findCourse(Data *data, const char *name) {
   * Valid grades should have optional '+' or '-' following the letter,
   * which should be A, B, C, D, F, U, or S.
   *
-  * @param grade - pointer to the grade
+  * @param grade pointer to the grade
   * @return true if grade is valid
   */
 bool isValidGrade(char *grade) {
@@ -240,7 +242,7 @@ void toUpperCase(char *string) {
   * Defines a behavior for the add command.
   * Sorts the list after addition.
   *
-  * @param data - pointer to the data
+  * @param data pointer to the data
   */
 void addCommand(Data *data, Command *cmd) {
   char *course = NULL;
@@ -311,7 +313,7 @@ void addCommand(Data *data, Command *cmd) {
   * Removes the course with given name.
   * Prints the error message if the course does not exist.
   *
-  * @param data - pointer to the data
+  * @param data pointer to the data
   */
 void removeCommand(Data *data, Command *cmd) {
   char *courseName = NULL;
@@ -337,8 +339,8 @@ void removeCommand(Data *data, Command *cmd) {
 	* Usage: change grade CSE2221 a
 	* or change hour CSE2221 4
 	*
-	* @param data - pointer to the data
-	* @param cmd - command input from the user
+	* @param data pointer to the data
+	* @param cmd command input from the user
 	*/
 void changeCommand(Data *data, Command *cmd) {
 	if (cmd->count != 5) {
@@ -401,16 +403,14 @@ int main(void) {
     if (matches != 1 || cmd->count == 1) {
       continue;
     }
-    if (strcmp(cmd->token[0], "calculate") == 0) {
-      calculateCommand(data);
+    if (strcmp(cmd->token[0], "calculate") == 0 || strcmp(cmd->token[0], "list") == 0 || strcmp(cmd->token[0], "ls") == 0) {
+      listCommand(data);
     } else if (strcmp(cmd->token[0], "add") == 0) {
       addCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "remove") == 0) {
       removeCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "help") == 0) {
       helpCommand();
-    } else if (strcmp(cmd->token[0], "list") == 0 || strcmp(cmd->token[0], "ls") == 0) {
-      listCommand(data);
     } else if (strcmp(cmd->token[0], "chart") == 0) {
       chartCommand();
     } else if (strcmp(cmd->token[0], "export") == 0) {
@@ -439,7 +439,7 @@ int main(void) {
   * standard input into the simple structure to pass arguments into system
   * calls later.
   *
-  * @param line - stdin
+  * @param line stdin
   * @return c pointer to the command struct
   */
 Command *parseSequence(char *line) {
