@@ -134,12 +134,11 @@ int compare(const void *a, const void *b) {
 }
 
 /**
-  * Defines behavior for the calculate command.
   * Calculates the cumulative GPA.
   *
   * @param data pointer to the data
   */
-void calculateCommand(Data *data) {
+void calculate(Data *data) {
   double gpa = calculateGPA(data, creditOnlyHours);
   fprintf(stdout, "The cumulative GPA with %d coursework(s) is:\t%.3f\n\n", data->size, gpa);
 }
@@ -155,7 +154,8 @@ void listCommand(Data *data) {
   }
   fprintf(stdout, "Total of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
 
-  calculateCommand(data);
+  // calculate and print cumulative GPA
+  calculate(data);
 }
 
 /**
