@@ -70,6 +70,10 @@ double calculateGPA(Data *data, int creditOnly) {
       gpa += (convertToNumeric(data->courseList[i].letterGrade) * data->courseList[i].hours);
     }
   }
-  gpa /= (data->totalCredits - creditOnly);
+  if (data->totalCredits - creditOnly > 0) {
+    gpa /= (data->totalCredits - creditOnly);
+  } else {
+    gpa = 0;
+  }
   return gpa;
 }

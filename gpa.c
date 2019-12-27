@@ -336,6 +336,15 @@ void removeCommand(Data *data, Command *cmd) {
   free(courseName);
 }
 
+bool isLetter(const char *grade) {
+  const char letter = grade[0];
+  return letter >= 'A' && letter <= 'F';
+}
+
+bool isSU(const char *grade) {
+  return strcmp(grade, "S") == 0 || strcmp(grade, "U") == 0;
+}
+
 /**
 	* Two different subroutines. change grade or change hour.
 	* Usage: change grade CSE2221 a
@@ -357,13 +366,12 @@ void changeCommand(Data *data, Command *cmd) {
 	}
 	// change grade
 	if (strcmp(cmd->token[1], "grade") == 0) {
-	  int su_toggle = 3; // 0b11
-	  //TODO
 		if (strlen(cmd->token[3]) > 2) {
 			fprintf(stdout, "Invalid grade\n");
 			return;
 		}
 		toUpperCase(cmd->token[3]);
+		bool suToLetter = !isLetter(course->letterGrade) && isLetter(cmd->token[3]);
 		if (isValidGrade(cmd->token[3])) {
 			free(course->letterGrade);
 			course->letterGrade = strdup(cmd->token[3]);
@@ -371,8 +379,12 @@ void changeCommand(Data *data, Command *cmd) {
 			fprintf(stdout, "Invalid grade\n");
 		}
 		// update creditOnlyHours global variable if new grade is S or U
-		if (strcmp(cmd->token[3], "S") == 0 || strcmp(cmd->token[3], "U") == 0) {
+		if (isSU(cmd->token[3])) {
 		  creditOnlyHours += course->hours;
+		}
+		// restore creditOnlyHours if going from S/U to Letter
+		if (isLetter(cmd->token[3]) && suToLetter) {
+		  creditOnlyHours -= course->hours;
 		}
 	} else if (strcmp(cmd->token[1], "hour") == 0) { // change hour
 		int newHour = atoi(cmd->token[3]);
