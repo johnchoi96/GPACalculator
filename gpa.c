@@ -336,11 +336,23 @@ void removeCommand(Data *data, Command *cmd) {
   free(courseName);
 }
 
+/**
+  * Returns true if passed in grade is between A and F.
+  *
+  * @param grade to check
+  * @return true if letter grade
+  */
 bool isLetter(const char *grade) {
   const char letter = grade[0];
   return letter >= 'A' && letter <= 'F';
 }
 
+/**
+  * Returns true if the passed in grade is a S or U grade.
+  *
+  * @param grade to check
+  * @return true if s/u grade
+  */
 bool isSU(const char *grade) {
   return strcmp(grade, "S") == 0 || strcmp(grade, "U") == 0;
 }
