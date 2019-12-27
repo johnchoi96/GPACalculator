@@ -157,6 +157,45 @@ void calculateCommand(Data *data) {
 }
 
 /**
+ * Defines behavior for the major-gpa calculate command.
+ * 
+ * @param data - pointer to the data
+ * @param cmd - command input from the user
+ */
+void mCalculate(Data *data){
+  char *course = (char *)malloc(MAX_TOKENS);
+  double mgpa;
+  fprintf(stdout, "Please specify the major code from major courses. EX: CSE2221 = CSE is the major code: ");
+  fscan(stdin, "%[^\n]", course);
+  Command *majorInput = parseSequence(course);
+  course = strdup(majorInput->token[0]) + "[0-9]";
+
+  if (course =! 1) {
+    if (course == ""){
+      fprintf(stdout, "The major course cannot be empty")
+      free(course);
+      return;
+    } else {
+      fprintf(stdout, "The major course name cannot exceed one string of characters");
+      free(course);
+      return;
+    }
+  }
+  
+  Course *majorCourse = findCourse(data, course);
+  
+  if (majorCourse == NULL) {
+      fprintf(stdout, "Major course %s does not exist in the system.\n", course);
+      return;
+  }
+  // must somehow retrive the major courses' information
+  mgpa = calculateGPA(data, creditOnlyHours); // creditOnlyHours must be changed
+  fprintf(stdout, "The major GPA with %d coursework(s) is: \t %.3f \n\n", data->size, gpa);
+  //Q.E.D....? messed up
+}
+
+
+/**
   * Uses binary search method to find the course in the list.
   * Produces O(log n) runtime at worst case.
   *
@@ -403,6 +442,8 @@ int main(void) {
     }
     if (strcmp(cmd->token[0], "calculate") == 0) {
       calculateCommand(data);
+    } else if ((strcmp(cmd-token[0], "calculate") && strcmp(cmd-token[1], "major")) == 0){
+      mCalculate(data, cmd);
     } else if (strcmp(cmd->token[0], "add") == 0) {
       addCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "remove") == 0) {
