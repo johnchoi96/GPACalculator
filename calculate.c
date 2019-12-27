@@ -19,7 +19,7 @@
   * Converts the letter grade to a double number value.
   * A+ does not exist at OSU but supported for students at other institutions.
   *
-  * @param grade - letter grade to convert
+  * @param grade letter grade to convert
   * @return number value of the letter grade
   */
 double convertToNumeric(const char *grade) {
@@ -56,7 +56,7 @@ double convertToNumeric(const char *grade) {
   * Formula is (grade * credits) / credits.
   * Skips over S/U grades.
   *
-  * @param data - pointer to the data struct
+  * @param data pointer to the data struct
   * @return cumulative GPA
   */
 double calculateGPA(Data *data, int creditOnly) {

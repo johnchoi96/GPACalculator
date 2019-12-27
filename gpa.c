@@ -19,6 +19,7 @@
 
 #define MAX_TOKENS 1024
 
+// total credit hours that does not count toward GPA calculation
 int creditOnlyHours;
 
 /* Every simple command has one of these associated with it */
@@ -27,6 +28,7 @@ typedef struct {
 	int count; /* the number of tokens */ /* count - 2 gives the last argument */
 } Command;
 
+// parses input from the user
 Command *parseSequence();
 
 /**
@@ -355,6 +357,8 @@ void changeCommand(Data *data, Command *cmd) {
 	}
 	// change grade
 	if (strcmp(cmd->token[1], "grade") == 0) {
+	  int su_toggle = 3; // 0b11
+	  //TODO
 		if (strlen(cmd->token[3]) > 2) {
 			fprintf(stdout, "Invalid grade\n");
 			return;
@@ -365,6 +369,10 @@ void changeCommand(Data *data, Command *cmd) {
 			course->letterGrade = strdup(cmd->token[3]);
 		} else {
 			fprintf(stdout, "Invalid grade\n");
+		}
+		// update creditOnlyHours global variable if new grade is S or U
+		if (strcmp(cmd->token[3], "S") == 0 || strcmp(cmd->token[3], "U") == 0) {
+		  creditOnlyHours += course->hours;
 		}
 	} else if (strcmp(cmd->token[1], "hour") == 0) { // change hour
 		int newHour = atoi(cmd->token[3]);
