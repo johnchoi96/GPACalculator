@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 08112019
+  * @since 12262019
   *
   * Driver file for this program.
   */
@@ -353,6 +353,7 @@ void changeCommand(Data *data, Command *cmd) {
 		fprintf(stdout, "Course %s not found\n", cmd->token[2]);
 		return;
 	}
+	// change grade
 	if (strcmp(cmd->token[1], "grade") == 0) {
 		if (strlen(cmd->token[3]) > 2) {
 			fprintf(stdout, "Invalid grade\n");
@@ -365,7 +366,7 @@ void changeCommand(Data *data, Command *cmd) {
 		} else {
 			fprintf(stdout, "Invalid grade\n");
 		}
-	} else if (strcmp(cmd->token[1], "hour") == 0) {
+	} else if (strcmp(cmd->token[1], "hour") == 0) { // change hour
 		int newHour = atoi(cmd->token[3]);
 		int oldHour = course->hours;
 		if (newHour == oldHour) {

@@ -1,10 +1,9 @@
 /**
   * @file calculate.c
   * @author John Choi
-  * @since 08112019
+  * @since 12262019
   *
   * Calculates overall GPA based on the courses added to the data.
-  * GPA scale based on NC State University, Raleigh, NC.
   *
   * Changes August 11, 2019:
   *   GPA scale now based on The Ohio State University, Columbus, OH.
@@ -18,6 +17,7 @@
 
 /**
   * Converts the letter grade to a double number value.
+  * A+ does not exist at OSU but supported for students at other institutions.
   *
   * @param grade - letter grade to convert
   * @return number value of the letter grade

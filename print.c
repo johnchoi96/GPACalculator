@@ -1,7 +1,7 @@
 /**
   * @file print.c
   * @author John Choi
-  * @since 08112019
+  * @since 12262019
   *
   * Handles simple printing job.
   */
@@ -15,10 +15,8 @@
 void aboutCommand() {
   fprintf(stdout, "Website: johnchoi96.github.io\n");
 
-  fprintf(stdout, "Changes in version %s:\n", VERSION);
-  fprintf(stdout, "\tFile name can be specified for import and export commands.\n");
-  fprintf(stdout, "\tAdded support for S/U grades.\n");
-  fprintf(stdout, "\tAdded change grade and change hour commands.\n");
+  fprintf(stdout, "Changes in Version %s:\n", VERSION);
+  fprintf(stdout, "\tCombined \"calculate\" and \"list\" commands.\n");
 
   fprintf(stdout, "\n");
 }
