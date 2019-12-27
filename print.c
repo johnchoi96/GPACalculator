@@ -23,7 +23,7 @@ void aboutCommand() {
 }
 
 void printHeader() {
-  fprintf(stdout, "GPA Calculator by John Choi 2019\n");
+  fprintf(stdout, "GPA Calculator by John Choi 2020\n");
   fprintf(stdout, "Version %s\n", VERSION);
   fprintf(stdout, "To add a course, \"add [COURSE] [HOURS] [LETTERGRADE]\"\n");
   fprintf(stdout, "Type \"help\" to see the full list of commands\n\n");

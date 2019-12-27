@@ -422,11 +422,11 @@ void changeCommand(Data *data, Command *cmd) {
   *
   * @return EXIT_SUCCESS if the program terminates correctly
   */
-int main(void) {
+int main() {
   canImport = true;
 	creditOnlyHours = 0;
   printHeader();
-  char *command = (char *)malloc(1024);
+  char *command = (char *)malloc(MAX_TOKENS);
   Data *data = initializeData();
   while (1) {
     fprintf(stdout, "cmd> ");
