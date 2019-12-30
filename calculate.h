@@ -1,7 +1,7 @@
 /**
   * @file calculate.h
   * @author John Choi
-  * @since 05082019
+  * @version 05082019
   *
   * Header file that defines function prototypes required for
   * calculating the cumulative GPA.

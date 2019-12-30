@@ -1,7 +1,7 @@
 /**
   * @file file.h
   * @author John Choi
-  * @since 05082019
+  * @version 05082019
   *
   * Defines prototypes for functions defined in file.c
   */
