@@ -62,7 +62,7 @@ void printFileList() {
 	fprintf(stdout, "List of savefiles:\n\n");
   while ((files = readdir(dp)) != NULL) {
 		if (strlen(files->d_name) > 4 && !strcmp(files->d_name + strlen(files->d_name) - 4, ".gpa")) {
-	    fprintf(stdout, "\t%50s\n", files->d_name);
+	    fprintf(stdout, "\t%30s\n", files->d_name);
 		}
   }
 	fprintf(stdout, "\n");
