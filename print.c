@@ -37,7 +37,7 @@ void helpCommand() {
   fprintf(stdout, "\tremove all\n");
   fprintf(stdout, "\tchange grade [COURSE] [NEW GRADE]\n"); // added in 2.0
   fprintf(stdout, "\tchange hour [COURSE] [NEW HOUR]\n"); // added in 2.0
-  fprintf(stdout, "\tlist or calculate\n");
+  fprintf(stdout, "\tlist or calculate\n"); // changed in 3.0
   fprintf(stdout, "\tchart\n");
   fprintf(stdout, "\timport\n"); // added in version 2.0
   fprintf(stdout, "\texport\n"); // added in version 1.2
