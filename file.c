@@ -1,7 +1,7 @@
 /**
   * @file file.c
   * @author John Choi
-  * @since 05082019
+  * @version 05082019
   *
   * Handles import and export commands.
   */
@@ -76,7 +76,7 @@ void export(Data *data, const char *filename) {
     strcat(line, credits);
     strcat(line, " ");
     strcat(line, data->courseList[i].letterGrade);
-    
+
     lineEncrypt(line); // encrypt line
     fprintf(fp, "%s\n", line);
     strcpy(line, "");

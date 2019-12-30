@@ -1,7 +1,7 @@
 /**
   * @file data.c
   * @author John Choi
-  * @since 08112019
+  * @version 08112019
   *
   * Initializes data and adds and removes courses, and frees data.
   */

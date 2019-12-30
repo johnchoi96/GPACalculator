@@ -1,7 +1,7 @@
 /**
   * @file calculate.c
   * @author John Choi
-  * @since 12262019
+  * @version 12302019
   *
   * Calculates overall GPA based on the courses added to the data.
   *
@@ -53,6 +53,7 @@ double convertToNumeric(const char *grade) {
 }
 
 /**
+  * Calculates the cumulative GPA.
   * Formula is (grade * credits) / credits.
   * Skips over S/U grades.
   *

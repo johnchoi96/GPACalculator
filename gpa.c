@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @since 12262019
+  * @version 12302019
   *
   * Driver file for this program.
   */
@@ -16,6 +16,10 @@
 #include <strings.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <dirent.h>
 
 #define MAX_TOKENS 1024
 
@@ -42,19 +46,53 @@ void fail(const char *msg) {
 }
 
 /**
+  * Prints the list of save files ending in .gpa.
+  */
+void printFileList() {
+  // Structs
+  DIR *dp;
+  struct dirent *files;
+
+	const char *path = "./savefiles";
+  dp = opendir(path);
+  if (!dp) {
+    fprintf(stdout, "Error while opening the directory.\n");
+		return;
+  }
+	fprintf(stdout, "List of savefiles:\n\n");
+  while ((files = readdir(dp)) != NULL) {
+		if (strlen(files->d_name) > 4 && !strcmp(files->d_name + strlen(files->d_name) - 4, ".gpa")) {
+	    fprintf(stdout, "\t%10s\n", files->d_name);
+		}
+  }
+	fprintf(stdout, "\n");
+  closedir(dp);
+}
+
+/**
   * Defines behavior for export command.
   * Exports to the savefile.gpa file if name is not specified.
   *
   * @param data pointer to the data struct
   */
 void exportCommand(Data *data, Command *cmd) {
-  char *fullName = (char *)malloc(MAX_TOKENS);
-  strcpy(fullName, "");
-
 	if (cmd->count != 2) {
 		fprintf(stdout, "Usage: export\n");
 		return;
 	}
+
+	// check if the directory "savefiles" exists
+	struct stat s;
+	bool dirExists = true;
+	int exists = stat("./savefiles", &s);
+	if (exists == -1) {
+		fprintf(stdout, "Directory \"savefiles\" directory will be created.\n");
+		dirExists = false;
+	}
+
+  char *fullName = (char *)malloc(MAX_TOKENS);
+  strcpy(fullName, "");
+
 	fprintf(stdout, "Please specify the file name. \".gpa\" suffix will be appended.\n");
 	fprintf(stdout, "\nFILE NAME: ");
 	fscanf(stdin, "%[^\n]", fullName);
@@ -71,10 +109,18 @@ void exportCommand(Data *data, Command *cmd) {
 	  return;
 	}
 
-	sprintf(fullName, "%s%s", nameInput->token[0], ".gpa");
+	// create directory if it does not exist
+	if (!dirExists) {
+		mkdir("./savefiles", 0777);
+	}
+	char *partialName = (char *)malloc(MAX_TOKENS);
+	strcpy(partialName, "");
+	sprintf(partialName, "%s%s", nameInput->token[0], ".gpa");
+	sprintf(fullName, "%s%s", "./savefiles/", partialName);
 	fprintf(stdout, "\n");
   export(data, fullName);
-  fprintf(stdout, "File exported as %s\n", fullName);
+  fprintf(stdout, "File exported as %s\n", partialName);
+	free(partialName);
   free(fullName);
   free(nameInput);
 }
@@ -93,6 +139,25 @@ void importCommand(Data *data, Command *cmd) {
     fprintf(stdout, "Usage: import\n");
     return;
   }
+	// check if the directory "savefiles" exists
+	struct stat s;
+	int exists = stat("./savefiles", &s);
+	if (exists == -1) {
+		fprintf(stdout, "Directory \"savefiles\" does not exist!\n");
+		fprintf(stdout, "GPA Calculator now retrieves the save files from the directory \"savefiles\".\n");
+		fprintf(stdout, "Would you like to create \"savefiles\" directory? (y/n)\n> ");
+		char *response = strdup("y");
+		fscanf(stdin, "%[^\n]", response);
+		fscanf(stdin, "%*c");
+		if (strcasecmp(response, "y") == 0) {
+			mkdir("./savefiles", 0777);
+		}
+		free(response);
+		return;
+	}
+	// at this point, savefiles directory exists so print the list of save files.
+	printFileList();
+
 	char *fullName = (char *)malloc(MAX_TOKENS);
 	strcpy(fullName, "");
 	fprintf(stdout, "Please specify the file name. \".gpa\" suffix will be appended.\n");
@@ -111,7 +176,7 @@ void importCommand(Data *data, Command *cmd) {
 	  return;
 	}
 
-	sprintf(fullName, "%s%s", nameInput->token[0], ".gpa");
+	sprintf(fullName, "%s%s%s", "./savefiles/", nameInput->token[0], ".gpa");
 	fprintf(stdout, "\n");
   if (import(data, fullName)) {
     canImport = false;

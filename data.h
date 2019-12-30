@@ -1,7 +1,7 @@
 /**
   * @file data.h
   * @author John Choi
-  * @since 02282019
+  * @version 02282019
   *
   * Header file that defines the struct, function prototypes,
   * and the data structure required for this program.
