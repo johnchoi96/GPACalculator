@@ -71,9 +71,11 @@ void printFileList() {
 
 /**
   * Defines behavior for export command.
-  * Exports to the savefile.gpa file if name is not specified.
+	* Checks if the savefiles directory exists, takes in the file name,
+	* and creates the save file.
   *
   * @param data pointer to the data struct
+	* @param cmd input from the user
   */
 void exportCommand(Data *data, Command *cmd) {
 	if (cmd->count != 2) {
@@ -132,8 +134,12 @@ void exportCommand(Data *data, Command *cmd) {
 
 /**
   * Defines behavior for import command.
+	* Checks if the save file directory exists, and if it does not, quits.
+	* Lists the list of files in the save files directory with suffix .gpa.
+	* Reads the save file and imports data.
   *
   * @param data pointer to the data struct
+	* @param cmd input from the user
   */
 void importCommand(Data *data, Command *cmd) {
   if (!canImport) {
