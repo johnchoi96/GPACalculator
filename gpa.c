@@ -113,14 +113,10 @@ void exportCommand(Data *data, Command *cmd) {
 	if (!dirExists) {
 		mkdir("./savefiles", 0777);
 	}
-	char *partialName = (char *)malloc(MAX_TOKENS);
-	strcpy(partialName, "");
-	sprintf(partialName, "%s%s", nameInput->token[0], ".gpa");
-	sprintf(fullName, "%s%s", "./savefiles/", partialName);
+	sprintf(fullName, "%s%s%s", "./savefiles/", nameInput->token[0], ".gpa");
 	fprintf(stdout, "\n");
   export(data, fullName);
   fprintf(stdout, "File exported as %s\n", fullName);
-	free(partialName);
   free(fullName);
   free(nameInput);
 }
