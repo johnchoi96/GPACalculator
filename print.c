@@ -1,7 +1,7 @@
 /**
   * @file print.c
   * @author John Choi
-  * @version 12262019
+  * @version 12302019
   *
   * Handles simple printing job.
   */
@@ -18,6 +18,7 @@ void aboutCommand() {
   fprintf(stdout, "Changes in Version %s:\n", VERSION);
   fprintf(stdout, "\tCombined \"calculate\" and \"list\" commands.\n");
   fprintf(stdout, "\tFixed calculation issue with S/U grade change.\n");
+  fprintf(stdout, "\tSavefiles now reside in \"savefiles\" directory.\n");
 
   fprintf(stdout, "\n");
 }
