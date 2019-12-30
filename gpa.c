@@ -119,7 +119,7 @@ void exportCommand(Data *data, Command *cmd) {
 	sprintf(fullName, "%s%s", "./savefiles/", partialName);
 	fprintf(stdout, "\n");
   export(data, fullName);
-  fprintf(stdout, "File exported as %s\n", partialName);
+  fprintf(stdout, "File exported as %s\n", fullName);
 	free(partialName);
   free(fullName);
   free(nameInput);
