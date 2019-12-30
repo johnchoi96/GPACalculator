@@ -184,6 +184,7 @@ void importCommand(Data *data, Command *cmd) {
     canImport = false;
     fprintf(stdout, "File %s imported successfully\n", fullName);
   }
+	free(filename);
   free(nameInput);
 	free(fullName);
 }
