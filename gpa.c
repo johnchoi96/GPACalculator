@@ -176,8 +176,9 @@ void importCommand(Data *data, Command *cmd) {
 	  return;
 	}
 
+	char *filename = strdup(nameInput->token[0]);
 	strcpy(fullName, "");
-	sprintf(fullName, "%s%s%s", "./savefiles/", nameInput->token[0], ".gpa");
+	sprintf(fullName, "%s%s%s", "./savefiles/", filename, ".gpa");
 	fprintf(stdout, "\n");
   if (import(data, fullName)) {
     canImport = false;
