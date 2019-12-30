@@ -161,6 +161,7 @@ void importCommand(Data *data, Command *cmd) {
 #ifdef windows
 					mkdir("./savefiles");
 #endif
+			fprintf(stdout, "Directory \"savefiles\" created.\n");
 		}
 		free(response);
 		return;
