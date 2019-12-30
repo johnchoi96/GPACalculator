@@ -111,7 +111,12 @@ void exportCommand(Data *data, Command *cmd) {
 
 	// create directory if it does not exist
 	if (!dirExists) {
+#ifdef unix
 		mkdir("./savefiles", 0777);
+#endif
+#ifdef windows
+		mkdir("./savefiles");
+#endif
 	}
 	char *partialName = (char *)malloc(MAX_TOKENS);
 	strcpy(partialName, "");
@@ -150,7 +155,12 @@ void importCommand(Data *data, Command *cmd) {
 		fscanf(stdin, "%[^\n]", response);
 		fscanf(stdin, "%*c");
 		if (strcasecmp(response, "y") == 0) {
-			mkdir("./savefiles", 0777);
+#ifdef unix
+					mkdir("./savefiles", 0777);
+#endif
+#ifdef windows
+					mkdir("./savefiles");
+#endif
 		}
 		free(response);
 		return;

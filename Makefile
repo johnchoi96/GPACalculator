@@ -1,5 +1,12 @@
+# @file Makefile
+# @author John Choi
+# @version 12302019
+#
+# Used to compile this project using GCC.
+# Defines preprocessor -Dunix
+
 CC = gcc
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -Dunix
 
 gpa: gpa.o data.o calculate.o print.o file.o
 gpa.o: gpa.c data.h print.h

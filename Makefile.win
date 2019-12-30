@@ -1,5 +1,5 @@
 CC = i686-w64-mingw32-gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -Dwindows
 
 all: GPACalculator.exe
 GPACalculator.exe: gpa.o data.o calculate.o print.o file.o
