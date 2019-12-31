@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
+#include <assert.h>
 
 /**
   * Converts the letter grade to a double number value.
@@ -82,13 +84,47 @@ double calculateGPA(Data *data) {
   return gpa;
 }
 
+bool startsWith(const char *subjectCode, const char *course) {
+  assert(strlen(course) >= strlen(subjectCode));
+  for (int i = 0; i < strlen(subjectCode); i++) {
+    if (subjectCode[i] != course[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 /**
   * Calculates the major GPA given by the subject code.
   *
   * @param data pointer to the data
   * @param major subject code
+  * @param totalCoursework total hours of this subject. This value will be
+  *   changed by this function.
   * @return gpa the major gpa
   */
-double calculateMajorGPA(Data *data, const char *major) {
-  
+double calculateMajorGPA(Data *data, const char *subjectCode, int *totalCoursework) {
+  double gpa = 0;
+  if (data->size == 0) {
+    return 0;
+  }
+
+  int totalHours = 0;
+  for (int i = 0; i < data->size; i++) {
+    // if the subject name starts with the subject code
+    if (strlen(data->courseList[i].name) >= strlen(subjectCode) && startsWith(subjectCode, data->courseList[i].name)) {
+      // and if the course does not have a S/U grade
+      if (strcmp(data->courseList[i].letterGrade, "S") != 0 && strcmp(data->courseList[i].letterGrade, "U") != 0) {
+        totalHours += data->courseList[i].hours;
+        gpa += (convertToNumeric(data->courseList[i].letterGrade) * data->courseList[i].hours);
+      }
+    }
+  }
+  *totalCoursework = totalHours;
+  if (totalHours > 0) {
+    gpa /= totalHours;
+  } else {
+    gpa = 0;
+  }
+  return gpa;
 }

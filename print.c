@@ -20,6 +20,7 @@ void aboutCommand() {
   fprintf(stdout, "\tFixed calculation issue with S/U grade change.\n");
   fprintf(stdout, "\tSavefiles now reside in \"savefiles\" directory.\n");
   fprintf(stdout, "\tModified list output format.\n");
+  fprintf(stdout, "\tAdded subject GPA calculation feature.\n");
 
   fprintf(stdout, "\n");
 }
@@ -39,6 +40,7 @@ void helpCommand() {
   fprintf(stdout, "\tchange grade [COURSE] [NEW GRADE]\n"); // added in 2.0
   fprintf(stdout, "\tchange hour [COURSE] [NEW HOUR]\n"); // added in 2.0
   fprintf(stdout, "\tlist or calculate\n"); // changed in 3.0
+  fprintf(stdout, "\tcalculate major\n"); // added in 3.0
   fprintf(stdout, "\tchart\n");
   fprintf(stdout, "\timport\n"); // added in version 2.0
   fprintf(stdout, "\texport\n"); // added in version 1.2

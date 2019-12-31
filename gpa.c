@@ -32,6 +32,8 @@ typedef struct {
 // parses input from the user
 Command *parseSequence();
 
+void toUpperCase(char *string);
+
 /**
   * Prints out failure message and terminates program.
   *
@@ -94,7 +96,7 @@ void exportCommand(Data *data, Command *cmd) {
   char *fullName = (char *)malloc(MAX_TOKENS);
   strcpy(fullName, "");
 
-	fprintf(stdout, "Please specify the file name. \".gpa\" suffix will be appended.\n");
+	fprintf(stdout, "Specify the file name. \".gpa\" suffix will be appended.\n");
 	fprintf(stdout, "\nFILE NAME: ");
 	fscanf(stdin, "%[^\n]", fullName);
 	fscanf(stdin, "%*c");
@@ -142,7 +144,7 @@ void exportCommand(Data *data, Command *cmd) {
   */
 void importCommand(Data *data, Command *cmd) {
   if (!canImport) {
-    fprintf(stdout, "Please clear current course entries with \"remove all\" command.\n\n");
+    fprintf(stdout, "Must clear current course entries with \"remove all\" command.\n\n");
     return;
   }
   if (cmd->count != 2) {
@@ -155,7 +157,7 @@ void importCommand(Data *data, Command *cmd) {
 	if (exists == -1) {
 		fprintf(stdout, "Directory \"savefiles\" does not exist!\n");
 		fprintf(stdout, "GPA Calculator now retrieves the save files from the directory \"savefiles\".\n");
-		fprintf(stdout, "Would you like to create \"savefiles\" directory? (y/n)\n> ");
+		fprintf(stdout, "Create \"savefiles\" directory? (y/n)\n> ");
 		char *response = strdup("y");
 		fscanf(stdin, "%[^\n]", response);
 		fscanf(stdin, "%*c");
@@ -176,7 +178,7 @@ void importCommand(Data *data, Command *cmd) {
 
 	char *fullName = (char *)malloc(MAX_TOKENS);
 	strcpy(fullName, "");
-	fprintf(stdout, "Please specify the file name. \".gpa\" suffix will be appended.\n");
+	fprintf(stdout, "Specify the file name. \".gpa\" suffix will be appended.\n");
 	fprintf(stdout, "\nFILE NAME: ");
 	fscanf(stdin, "%[^\n]", fullName);
 	fscanf(stdin, "%*c");
@@ -230,18 +232,31 @@ void calculate(Data *data) {
 }
 
 /**
-  * Sorts and prints out the list of added courses.
+  * Calculates GPA and prints out the list of added courses.
   *
-  * @param data - pointer to the data
+  * @param data pointer to the data
+	* @param cmd user input
   */
-void listCommand(Data *data) {
-  for (int i = 0; i < data->size; i++) {
-    fprintf(stdout, "%20s%3d Hours %7s%-3s earned\n", data->courseList[i].name, data->courseList[i].hours, "", data->courseList[i].letterGrade);
-  }
-  fprintf(stdout, "Total of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
+void listCommand(Data *data, Command *cmd) {
+	if (strcasecmp(cmd->token[0], "calculate") == 0 && strcasecmp(cmd->token[1], "major") == 0) {
+		fprintf(stdout, "\nEnter subject code> ");
+		char *subjectCode = (char *)malloc(30);
+		fscanf(stdin, "%[^\n]", subjectCode);
+		fscanf(stdin, "%*c");
+		toUpperCase(subjectCode);
+		int *totalCoursework = NULL;
+		double gpa = calculateMajorGPA(data, subjectCode, totalCoursework);
+	  fprintf(stdout, "The major GPA of %s with %d coursework(s) is:\t%.3f\n\n", subjectCode, *totalCoursework, gpa);
+		free(subjectCode);
+	} else {
+		for (int i = 0; i < data->size; i++) {
+	    fprintf(stdout, "%20s%3d Hours %7s%-3s earned\n", data->courseList[i].name, data->courseList[i].hours, "", data->courseList[i].letterGrade);
+	  }
+	  fprintf(stdout, "Total of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
 
-  // calculate and print cumulative GPA
-  calculate(data);
+	  // calculate and print cumulative GPA
+	  calculate(data);
+	}
 }
 
 /**
@@ -486,7 +501,7 @@ int main() {
       continue;
     }
     if (strcmp(cmd->token[0], "calculate") == 0 || strcmp(cmd->token[0], "list") == 0 || strcmp(cmd->token[0], "ls") == 0) {
-      listCommand(data);
+      listCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "add") == 0) {
       addCommand(data, cmd);
     } else if (strcmp(cmd->token[0], "remove") == 0) {

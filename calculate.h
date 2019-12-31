@@ -28,8 +28,10 @@ double calculateGPA(Data *data);
   *
   * @param data pointer to the data
   * @param major subject code
+  * @param totalCoursework total hours of this subject. This value will be
+  *   changed by this function.
   * @return gpa the major gpa
   */
-double calculateMajorGPA(Data *data, const char *major);
+double calculateMajorGPA(Data *data, const char *major, int *totalCoursework);
 
 #endif
