@@ -244,10 +244,11 @@ void listCommand(Data *data, Command *cmd) {
 		fscanf(stdin, "%[^\n]", subjectCode);
 		fscanf(stdin, "%*c");
 		toUpperCase(subjectCode);
-		int *totalCoursework = NULL;
+		int *totalCoursework = (int *)malloc(sizeof(int));
 		double gpa = calculateMajorGPA(data, subjectCode, totalCoursework);
 	  fprintf(stdout, "The major GPA of %s with %d coursework(s) is:\t%.3f\n\n", subjectCode, *totalCoursework, gpa);
 		free(subjectCode);
+		free(totalCoursework);
 	} else {
 		for (int i = 0; i < data->size; i++) {
 	    fprintf(stdout, "%20s%3d Hours %7s%-3s earned\n", data->courseList[i].name, data->courseList[i].hours, "", data->courseList[i].letterGrade);
