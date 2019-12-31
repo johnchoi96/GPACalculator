@@ -109,6 +109,7 @@ double calculateMajorGPA(Data *data, const char *subjectCode, int *totalCoursewo
     return 0;
   }
 
+  *totalCoursework = 0;
   int totalHours = 0;
   for (int i = 0; i < data->size; i++) {
     // if the subject name starts with the subject code
@@ -118,9 +119,9 @@ double calculateMajorGPA(Data *data, const char *subjectCode, int *totalCoursewo
         totalHours += data->courseList[i].hours;
         gpa += (convertToNumeric(data->courseList[i].letterGrade) * data->courseList[i].hours);
       }
+      (*totalCoursework)++;
     }
   }
-  *totalCoursework = totalHours;
   if (totalHours > 0) {
     gpa /= totalHours;
   } else {
