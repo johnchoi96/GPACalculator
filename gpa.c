@@ -238,7 +238,7 @@ void calculate(Data *data) {
 	* @param cmd user input
   */
 void listCommand(Data *data, Command *cmd) {
-	if (strcasecmp(cmd->token[0], "calculate") == 0 && strcasecmp(cmd->token[1], "major") == 0) {
+	if (cmd->count == 3 && strcasecmp(cmd->token[0], "calculate") == 0 && strcasecmp(cmd->token[1], "major") == 0) {
 		fprintf(stdout, "\nEnter subject code> ");
 		char *subjectCode = (char *)malloc(30);
 		fscanf(stdin, "%[^\n]", subjectCode);
