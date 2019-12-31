@@ -1,7 +1,7 @@
 /**
   * @file calculate.h
   * @author John Choi
-  * @version 05082019
+  * @version 12302019
   *
   * Header file that defines function prototypes required for
   * calculating the cumulative GPA.
@@ -24,6 +24,6 @@ extern int creditOnlyHours;
   * @param data - pointer to the data
   * @return gpa - the cumulative gpa
   */
-double calculateGPA(Data *data, int creditOnly);
+double calculateGPA(Data *data);
 
 #endif

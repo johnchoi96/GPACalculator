@@ -60,15 +60,19 @@ double convertToNumeric(const char *grade) {
   * @param data pointer to the data struct
   * @return cumulative GPA
   */
-double calculateGPA(Data *data, int creditOnly) {
+double calculateGPA(Data *data) {
   double gpa = 0;
   if (data->size == 0) {
     return 0;
   }
 
+  int creditOnly = 0;
+
   for (int i = 0; i < data->size; i++) {
-    if (strcmp(data->courseList[i].letterGrade, "S") != 0 || strcmp(data->courseList[i].letterGrade, "U") != 0) {
-      gpa += (convertToNumeric(data->courseList[i].letterGrade) * data->courseList[i].hours);
+    if (strcmp(data->courseList[i].letterGrade, "S") == 0 || strcmp(data->courseList[i].letterGrade, "U") == 0) {
+      creditOnly += data->courseList[i].hours;
+    } else {
+        gpa += (convertToNumeric(data->courseList[i].letterGrade) * data->courseList[i].hours);
     }
   }
   if (data->totalCredits - creditOnly > 0) {

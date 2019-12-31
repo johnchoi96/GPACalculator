@@ -24,7 +24,7 @@
 #define MAX_TOKENS 1024
 
 // total credit hours that does not count toward GPA calculation
-int creditOnlyHours;
+// int creditOnlyHours;
 
 /* Every simple command has one of these associated with it */
 typedef struct {
@@ -226,7 +226,7 @@ int compare(const void *a, const void *b) {
   * @param data pointer to the data
   */
 void calculate(Data *data) {
-  double gpa = calculateGPA(data, creditOnlyHours);
+  double gpa = calculateGPA(data);
   fprintf(stdout, "The cumulative GPA with %d coursework(s) is:\t%.3f\n\n", data->size, gpa);
 }
 
