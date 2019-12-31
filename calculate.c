@@ -84,6 +84,13 @@ double calculateGPA(Data *data) {
   return gpa;
 }
 
+/**
+  * Returns true if course starts with the given subject code.
+  *
+  * @param subjectCode to check if exists
+  * @param course full name of the course
+  * @return true if subject code exists in course name
+  */
 bool startsWith(const char *subjectCode, const char *course) {
   assert(strlen(course) >= strlen(subjectCode));
   for (int i = 0; i < strlen(subjectCode); i++) {

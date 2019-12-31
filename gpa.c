@@ -31,7 +31,7 @@ typedef struct {
 
 // parses input from the user
 Command *parseSequence();
-
+// changes passed in string to uppercase
 void toUpperCase(char *string);
 
 /**
