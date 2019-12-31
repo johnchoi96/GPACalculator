@@ -23,9 +23,6 @@
 
 #define MAX_TOKENS 1024
 
-// total credit hours that does not count toward GPA calculation
-// int creditOnlyHours;
-
 /* Every simple command has one of these associated with it */
 typedef struct {
 	char* token[MAX_TOKENS]; /* tokens of the command */
@@ -91,6 +88,8 @@ void exportCommand(Data *data, Command *cmd) {
 		fprintf(stdout, "Directory \"savefiles\" directory will be created.\n");
 		dirExists = false;
 	}
+
+	printFileList();
 
   char *fullName = (char *)malloc(MAX_TOKENS);
   strcpy(fullName, "");
@@ -237,7 +236,7 @@ void calculate(Data *data) {
   */
 void listCommand(Data *data) {
   for (int i = 0; i < data->size; i++) {
-    fprintf(stdout, "%7s%3d Hours %7s earned\n", data->courseList[i].name, data->courseList[i].hours, data->courseList[i].letterGrade);
+    fprintf(stdout, "%20s%3d Hours %7s%-3s earned\n", data->courseList[i].name, data->courseList[i].hours, "", data->courseList[i].letterGrade);
   }
   fprintf(stdout, "Total of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
 
@@ -373,10 +372,6 @@ void addCommand(Data *data, Command *cmd) {
     return;
   }
 
-	if (strcmp(letterGrade, "S") == 0 || strcmp(letterGrade, "U") == 0) {
-		creditOnlyHours += creditHours;
-	}
-
 	// check for duplicates
   if (data->size != 0) {
     Course *dupCheckCourse = findCourse(data, course);
@@ -422,27 +417,6 @@ void removeCommand(Data *data, Command *cmd) {
 }
 
 /**
-  * Returns true if passed in grade is between A and F.
-  *
-  * @param grade to check
-  * @return true if letter grade
-  */
-bool isLetter(const char *grade) {
-  const char letter = grade[0];
-  return letter >= 'A' && letter <= 'F';
-}
-
-/**
-  * Returns true if the passed in grade is a S or U grade.
-  *
-  * @param grade to check
-  * @return true if s/u grade
-  */
-bool isSU(const char *grade) {
-  return strcmp(grade, "S") == 0 || strcmp(grade, "U") == 0;
-}
-
-/**
 	* Two different subroutines. change grade or change hour.
 	* Usage: change grade CSE2221 a
 	* or change hour CSE2221 4
@@ -468,20 +442,11 @@ void changeCommand(Data *data, Command *cmd) {
 			return;
 		}
 		toUpperCase(cmd->token[3]);
-		bool suToLetter = !isLetter(course->letterGrade) && isLetter(cmd->token[3]);
 		if (isValidGrade(cmd->token[3])) {
 			free(course->letterGrade);
 			course->letterGrade = strdup(cmd->token[3]);
 		} else {
 			fprintf(stdout, "Invalid grade\n");
-		}
-		// update creditOnlyHours global variable if new grade is S or U
-		if (isSU(cmd->token[3])) {
-		  creditOnlyHours += course->hours;
-		}
-		// restore creditOnlyHours if going from S/U to Letter
-		if (isLetter(cmd->token[3]) && suToLetter) {
-		  creditOnlyHours -= course->hours;
 		}
 	} else if (strcmp(cmd->token[1], "hour") == 0) { // change hour
 		int newHour = atoi(cmd->token[3]);
@@ -509,7 +474,6 @@ void changeCommand(Data *data, Command *cmd) {
   */
 int main() {
   canImport = true;
-	creditOnlyHours = 0;
   printHeader();
   char *command = (char *)malloc(MAX_TOKENS);
   Data *data = initializeData();

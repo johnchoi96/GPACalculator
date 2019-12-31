@@ -1,7 +1,7 @@
 /**
   * @file file.c
   * @author John Choi
-  * @version 05082019
+  * @version 12302019
   *
   * Handles import and export commands.
   */
@@ -12,8 +12,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-
-int creditOnlyHours;
 
 /**
   * Encrypts line by adding 4 to the ascii code of each character.
@@ -38,7 +36,6 @@ void lineDecrypt(char *line) {
 }
 
 bool import(Data *data, const char *filename) {
-  creditOnlyHours = 0;
   FILE *fp = fopen(filename, "r");
   if (!fp) {
     fprintf(stdout, "Cannot open file <%s>\n\n", filename);
@@ -51,9 +48,6 @@ bool import(Data *data, const char *filename) {
   while (fscanf(fp, "%[^\n]\n", line) != EOF) {
     lineDecrypt(line);
     sscanf(line, "%s %d %s", courseName, &creditHour, letterGrade);
-    if (strcmp(letterGrade, "S") == 0 || strcmp(letterGrade, "U") == 0) {
-      creditOnlyHours += creditHour;
-    }
     addCourse(data, courseName, creditHour, letterGrade);
   }
   free(line);

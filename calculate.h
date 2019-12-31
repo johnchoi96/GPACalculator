@@ -14,16 +14,22 @@
 #ifndef _CALCULATEH_
 #define _CALCULATEH_
 
-/** Counts the hour of credit only classes */
-extern int creditOnlyHours;
-
 /**
   * Calculates the cumulative GPA based on the courses in the data
   * struct.
   *
-  * @param data - pointer to the data
-  * @return gpa - the cumulative gpa
+  * @param data pointer to the data
+  * @return gpa the cumulative gpa
   */
 double calculateGPA(Data *data);
+
+/**
+  * Calculates the major GPA given by the subject code.
+  *
+  * @param data pointer to the data
+  * @param major subject code
+  * @return gpa the major gpa
+  */
+double calculateMajorGPA(Data *data, const char *major);
 
 #endif

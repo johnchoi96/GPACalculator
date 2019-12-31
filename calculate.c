@@ -55,7 +55,7 @@ double convertToNumeric(const char *grade) {
 /**
   * Calculates the cumulative GPA.
   * Formula is (grade * credits) / credits.
-  * Skips over S/U grades.
+  * Skips over S/U grades when calculating GPA.
   *
   * @param data pointer to the data struct
   * @return cumulative GPA
@@ -67,7 +67,6 @@ double calculateGPA(Data *data) {
   }
 
   int creditOnly = 0;
-
   for (int i = 0; i < data->size; i++) {
     if (strcmp(data->courseList[i].letterGrade, "S") == 0 || strcmp(data->courseList[i].letterGrade, "U") == 0) {
       creditOnly += data->courseList[i].hours;
@@ -81,4 +80,15 @@ double calculateGPA(Data *data) {
     gpa = 0;
   }
   return gpa;
+}
+
+/**
+  * Calculates the major GPA given by the subject code.
+  *
+  * @param data pointer to the data
+  * @param major subject code
+  * @return gpa the major gpa
+  */
+double calculateMajorGPA(Data *data, const char *major) {
+  
 }

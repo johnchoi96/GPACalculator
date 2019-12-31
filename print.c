@@ -19,6 +19,7 @@ void aboutCommand() {
   fprintf(stdout, "\tCombined \"calculate\" and \"list\" commands.\n");
   fprintf(stdout, "\tFixed calculation issue with S/U grade change.\n");
   fprintf(stdout, "\tSavefiles now reside in \"savefiles\" directory.\n");
+  fprintf(stdout, "\tModified list output format.\n");
 
   fprintf(stdout, "\n");
 }
