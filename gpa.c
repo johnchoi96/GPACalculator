@@ -163,10 +163,10 @@ void importCommand(Data *data, Command *cmd) {
 		fscanf(stdin, "%*c");
 		if (strcasecmp(response, "y") == 0) {
 #ifdef unix
-					mkdir("./savefiles", 0777);
+			mkdir("./savefiles", 0777);
 #endif
 #ifdef windows
-					_mkdir("./savefiles");
+			_mkdir("./savefiles");
 #endif
 			fprintf(stdout, "Directory \"savefiles\" created.\n");
 		}
