@@ -22,7 +22,7 @@
 #include <dirent.h>
 
 #ifdef windows
-#include <direct.h>
+#include <windows.h>
 #endif
 
 #define MAX_TOKENS 1024
@@ -122,7 +122,8 @@ void exportCommand(Data *data, Command *cmd) {
 		mkdir("./savefiles", 0777);
 #endif
 #ifdef windows
-		_mkdir("./savefiles");
+		// _mkdir("./savefiles");
+		CreateDirectory("./savefiles", NULL);
 #endif
 	}
 	char *partialName = (char *)malloc(MAX_TOKENS);
