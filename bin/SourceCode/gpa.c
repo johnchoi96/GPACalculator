@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @version 01012019
+  * @version 01012020
   *
   * Driver file for this program.
   */
@@ -94,7 +94,7 @@ void exportCommand(Data *data, Command *cmd) {
 		fprintf(stdout, "Directory \"savefiles\" directory will be created.\n");
 		dirExists = false;
 	}
-  
+
   if (dirExists) {
 	  printFileList();
 	}
