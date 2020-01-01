@@ -2,5 +2,4 @@
 valgrind
 *.gch
 gpa
-*.exe
-myInput/
+savefiles/
