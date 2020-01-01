@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @version 12302019
+  * @version 12312019
   *
   * Driver file for this program.
   */
@@ -20,6 +20,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+
+#ifdef windows
+#include <direct.h>
+#endif
 
 #define MAX_TOKENS 1024
 
@@ -118,7 +122,7 @@ void exportCommand(Data *data, Command *cmd) {
 		mkdir("./savefiles", 0777);
 #endif
 #ifdef windows
-		mkdir("./savefiles");
+		_mkdir("./savefiles");
 #endif
 	}
 	char *partialName = (char *)malloc(MAX_TOKENS);
@@ -163,10 +167,10 @@ void importCommand(Data *data, Command *cmd) {
 		fscanf(stdin, "%*c");
 		if (strcasecmp(response, "y") == 0) {
 #ifdef unix
-					mkdir("./savefiles", 0777);
+			mkdir("./savefiles", 0777);
 #endif
 #ifdef windows
-					mkdir("./savefiles");
+			_mkdir("./savefiles");
 #endif
 			fprintf(stdout, "Directory \"savefiles\" created.\n");
 		}
