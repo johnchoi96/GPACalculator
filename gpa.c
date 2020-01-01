@@ -118,7 +118,7 @@ void exportCommand(Data *data, Command *cmd) {
 		mkdir("./savefiles", 0777);
 #endif
 #ifdef windows
-		mkdir("./savefiles");
+		_mkdir("./savefiles");
 #endif
 	}
 	char *partialName = (char *)malloc(MAX_TOKENS);
@@ -166,7 +166,7 @@ void importCommand(Data *data, Command *cmd) {
 					mkdir("./savefiles", 0777);
 #endif
 #ifdef windows
-					mkdir("./savefiles");
+					_mkdir("./savefiles");
 #endif
 			fprintf(stdout, "Directory \"savefiles\" created.\n");
 		}
