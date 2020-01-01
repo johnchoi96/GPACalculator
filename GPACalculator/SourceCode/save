@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# @file save
+# @author John Choi
+# @version 12302019
+#
+# Simple shell script to easily commit and push using git.
+
+git add .
+if [ $# == 0 ]
+then
+	git commit -m "Saving"
+else
+	argument=$1
+	git commit -m "$argument"
+fi
+git push
+
