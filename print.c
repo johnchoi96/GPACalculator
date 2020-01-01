@@ -1,7 +1,7 @@
 /**
   * @file print.c
   * @author John Choi
-  * @version 12302019
+  * @version 12312019
   *
   * Handles simple printing job.
   */
@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define VERSION "3.0"
+#define VERSION "3.0.1"
 
 void aboutCommand() {
   fprintf(stdout, "Website: johnchoi96.github.io\n");

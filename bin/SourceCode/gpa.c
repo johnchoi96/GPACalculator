@@ -1,7 +1,7 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @version 12312019
+  * @version 01012019
   *
   * Driver file for this program.
   */
@@ -21,8 +21,8 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
-#ifdef windows
-#include <direct.h>
+#ifndef unix
+#include <windows.h>
 #endif
 
 #define MAX_TOKENS 1024
@@ -94,8 +94,10 @@ void exportCommand(Data *data, Command *cmd) {
 		fprintf(stdout, "Directory \"savefiles\" directory will be created.\n");
 		dirExists = false;
 	}
-
-	printFileList();
+  
+  if (dirExists) {
+	  printFileList();
+	}
 
   char *fullName = (char *)malloc(MAX_TOKENS);
   strcpy(fullName, "");
@@ -120,9 +122,8 @@ void exportCommand(Data *data, Command *cmd) {
 	if (!dirExists) {
 #ifdef unix
 		mkdir("./savefiles", 0777);
-#endif
-#ifdef windows
-		_mkdir("./savefiles");
+#else
+    CreateDirectory("./savefiles", NULL);
 #endif
 	}
 	char *partialName = (char *)malloc(MAX_TOKENS);
@@ -155,7 +156,7 @@ void importCommand(Data *data, Command *cmd) {
     fprintf(stdout, "Usage: import\n");
     return;
   }
-	// check if the directory "savefiles" exists
+	// check if the directory "savefiles" exists if unix is defined
 	struct stat s;
 	int exists = stat("./savefiles", &s);
 	if (exists == -1) {
@@ -168,9 +169,8 @@ void importCommand(Data *data, Command *cmd) {
 		if (strcasecmp(response, "y") == 0) {
 #ifdef unix
 			mkdir("./savefiles", 0777);
-#endif
-#ifdef windows
-			_mkdir("./savefiles");
+#else
+      CreateDirectory("./savefiles", NULL);
 #endif
 			fprintf(stdout, "Directory \"savefiles\" created.\n");
 		}
@@ -495,9 +495,8 @@ void changeCommand(Data *data, Command *cmd) {
 int main() {
 #ifdef unix
 	system("clear");
-#endif
-#ifdef windows
-	system("cls");
+#else
+  system("cls");
 #endif
   canImport = true;
   printHeader();
