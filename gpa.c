@@ -489,6 +489,12 @@ void changeCommand(Data *data, Command *cmd) {
   * @return EXIT_SUCCESS if the program terminates correctly
   */
 int main() {
+#ifdef unix
+	system("clear");
+#endif
+#ifdef windows
+	system("cls");
+#endif
   canImport = true;
   printHeader();
   char *command = (char *)malloc(MAX_TOKENS);
