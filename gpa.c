@@ -239,29 +239,34 @@ void calculate(Data *data) {
   * Calculates GPA and prints out the list of added courses.
   *
   * @param data pointer to the data
-	* @param cmd user input
+    * @param cmd user input
   */
 void listCommand(Data *data, Command *cmd) {
-	if (cmd->count == 3 && strcasecmp(cmd->token[0], "calculate") == 0 && strcasecmp(cmd->token[1], "major") == 0) {
-		fprintf(stdout, "\nEnter subject code> ");
-		char *subjectCode = (char *)malloc(30);
-		fscanf(stdin, "%[^\n]", subjectCode);
-		fscanf(stdin, "%*c");
-		toUpperCase(subjectCode);
-		int *totalCoursework = (int *)malloc(sizeof(int));
-		double gpa = calculateMajorGPA(data, subjectCode, totalCoursework);
-	  fprintf(stdout, "\nThe major GPA of %s with %d coursework(s) is:\t%.3f\n\n", subjectCode, *totalCoursework, gpa);
-		free(subjectCode);
-		free(totalCoursework);
-	} else {
-		for (int i = 0; i < data->size; i++) {
-	    fprintf(stdout, "%20s%3d Hours %7s%-3s earned\n", data->courseList[i].name, data->courseList[i].hours, "", data->courseList[i].letterGrade);
-	  }
-	  fprintf(stdout, "\nTotal of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
-
-	  // calculate and print cumulative GPA
-	  calculate(data);
-	}
+    if (cmd->count > 3) {
+        fprintf(stdout, "Invalid command\n");
+    } else if (cmd->count == 3 && strcasecmp(cmd->token[0], "calculate") == 0 && strcasecmp(cmd->token[1], "major") == 0) {
+        fprintf(stdout, "\nEnter subject code> ");
+        char *subjectCode = (char *)malloc(30);
+        fscanf(stdin, "%[^\n]", subjectCode);
+        fscanf(stdin, "%*c");
+        if (strlen(subjectCode) == 0) {
+            fprintf(stdout, "Subject code must not be blank\n");
+            return;
+        }
+        toUpperCase(subjectCode);
+        int *totalCoursework = (int *)malloc(sizeof(int));
+        double gpa = calculateMajorGPA(data, subjectCode, totalCoursework);
+        fprintf(stdout, "\nThe major GPA of %s with %d coursework(s) is:\t%.3f\n\n", subjectCode, *totalCoursework, gpa);
+        free(subjectCode);
+        free(totalCoursework);
+    } else {
+        for (int i = 0; i < data->size; i++) {
+        fprintf(stdout, "%20s%3d Hours %7s%-3s earned\n", data->courseList[i].name, data->courseList[i].hours, "", data->courseList[i].letterGrade);
+        }
+        fprintf(stdout, "\nTotal of %d courseworks with %d credit hours completed\n", data->size, data->totalCredits);
+        // calculate and print cumulative GPA
+        calculate(data);
+    }
 }
 
 /**
