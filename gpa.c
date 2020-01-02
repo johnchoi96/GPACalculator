@@ -202,12 +202,12 @@ void importCommand(Data *data, Command *cmd) {
 	strcpy(fullName, "");
 	sprintf(fullName, "%s%s%s", "./savefiles/", filename, ".gpa");
 	fprintf(stdout, "\n");
-  if (import(data, fullName)) {
+    if (import(data, fullName)) {
     canImport = false;
     fprintf(stdout, "File %s imported successfully\n", fullName);
-  }
+    }
 	free(filename);
-  free(nameInput);
+    free(nameInput);
 	free(fullName);
 }
 
@@ -244,21 +244,25 @@ void calculate(Data *data) {
 void listCommand(Data *data, Command *cmd) {
     if (cmd->count > 3) {
         fprintf(stdout, "Invalid command\n");
-    } else if (cmd->count == 3 && strcasecmp(cmd->token[0], "calculate") == 0 && strcasecmp(cmd->token[1], "major") == 0) {
-        fprintf(stdout, "\nEnter subject code> ");
-        char *subjectCode = (char *)malloc(30);
-        fscanf(stdin, "%[^\n]", subjectCode);
-        fscanf(stdin, "%*c");
-        if (strlen(subjectCode) == 0) {
-            fprintf(stdout, "Subject code must not be blank\n");
-            return;
+    } else if (cmd->count == 3) {
+        if (strcasecmp(cmd->token[0], "calculate") == 0 && strcasecmp(cmd->token[1], "major") == 0) {
+            fprintf(stdout, "\nEnter subject code> ");
+            char *subjectCode = (char *)malloc(30);
+            fscanf(stdin, "%[^\n]", subjectCode);
+            fscanf(stdin, "%*c");
+            if (strlen(subjectCode) == 0) {
+                fprintf(stdout, "Subject code must not be blank\n");
+                return;
+            }
+            toUpperCase(subjectCode);
+            int *totalCoursework = (int *)malloc(sizeof(int));
+            double gpa = calculateMajorGPA(data, subjectCode, totalCoursework);
+            fprintf(stdout, "\nThe major GPA of %s with %d coursework(s) is:\t%.3f\n\n", subjectCode, *totalCoursework, gpa);
+            free(subjectCode);
+            free(totalCoursework);
+        } else {
+            fprintf(stdout, "Invalid command\n");
         }
-        toUpperCase(subjectCode);
-        int *totalCoursework = (int *)malloc(sizeof(int));
-        double gpa = calculateMajorGPA(data, subjectCode, totalCoursework);
-        fprintf(stdout, "\nThe major GPA of %s with %d coursework(s) is:\t%.3f\n\n", subjectCode, *totalCoursework, gpa);
-        free(subjectCode);
-        free(totalCoursework);
     } else {
         for (int i = 0; i < data->size; i++) {
         fprintf(stdout, "%20s%3d Hours %7s%-3s earned\n", data->courseList[i].name, data->courseList[i].hours, "", data->courseList[i].letterGrade);
