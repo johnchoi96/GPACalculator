@@ -253,6 +253,7 @@ void listCommand(Data *data, Command *cmd) {
             fscanf(stdin, "%*c");
             if (strlen(subjectCode) == 0) {
                 fprintf(stdout, "Subject code must not be blank\n");
+                free(subjectCode);
                 return;
             }
             toUpperCase(subjectCode);
