@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define VERSION "3.0.1"
+#define VERSION "3.0.2"
 
 void aboutCommand() {
   fprintf(stdout, "Website: johnchoi96.github.io\n");
