@@ -1,7 +1,8 @@
 /**
   * @file gpa.c
   * @author John Choi
-  * @version 01012020
+  * @author Peter Lee
+  * @version 01022020
   *
   * Driver file for this program.
   */
